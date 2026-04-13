@@ -1,0 +1,44 @@
+/*-- Cabeçalho --*/
+.orientacao-logo {
+    display: flex;
+        align-items: center;
+        gap: 15px;
+}
+
+.cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cabecalho a {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+    color: #030930;
+}
+
+/*-- Render dos arquivos --*/
+/* 1. Faz o container de conteúdo crescer e empurrar o rodapé para baixo */
+#conteudo {
+    flex: 1;
+}
+
+/*-- Rodapé --*/
+#descricao-rodape {
+    color: white;
+    width: 400px;
+    text-align: justify;
+}
+
+#orientar-copyright {
+    color: white;
+    display: flex;
+    justify-content: space-between;
+}
+
+.titulo-rodape {
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+}
