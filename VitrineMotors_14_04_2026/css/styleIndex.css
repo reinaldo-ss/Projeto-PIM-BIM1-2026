@@ -1,0 +1,67 @@
+/*-- Cabeçalho --*/
+.orientacao-logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cabecalho a {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+    color: #030930;
+}
+
+#btn-sobre, #btn-ajuda,#btn-cadastrar  {
+    border: solid 1px #030930;
+    padding: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+
+    /* 2. Deixa a mudança de cor suave (opcional, mas recomendado) */
+    transition: all 0.3s ease;
+}
+
+/* Efeito quando o mouse passa por cima (Hover) */
+#btn-sobre:hover, #btn-ajuda:hover, #btn-cadastrar:hover {
+    /* 3. Escurece o botão (muda o fundo para a cor da borda) */
+    background-color: #030930e1;
+    
+    /* 4. Muda a cor do texto para branco para manter o contraste */
+    color: white;
+}
+
+/*-- Render dos arquivos --*/
+/* 1. Faz o container de conteúdo crescer e empurrar o rodapé para baixo */
+#conteudo {
+    flex: 1;
+}
+
+/*-- Rodapé --*/
+#titulo-rodape {
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    margin: 10px 0px;
+}
+
+#descricao-rodape {
+    color: white;
+    width: 400px;
+    text-align: justify;
+    margin: 10px 0px;
+
+}
+
+#orientar-copyright {
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0px;
+}
