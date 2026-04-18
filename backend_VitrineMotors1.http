@@ -1,0 +1,6 @@
+@backend_VitrineMotors1_HostAddress = http://localhost:5147
+
+GET {{backend_VitrineMotors1_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
