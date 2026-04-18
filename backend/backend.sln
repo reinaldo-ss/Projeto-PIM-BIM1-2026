@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "backend_VitrineMotors1", "backend_VitrineMotors1.csproj", "{1F4AC8A4-6ED4-2853-1094-65C20A66FC2A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VitrineMotors", "VitrineMotors.csproj", "{1F4AC8A4-6ED4-2853-1094-65C20A66FC2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
