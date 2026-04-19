@@ -1,0 +1,167 @@
+/* ===== Página Detalhes do Carro ===== */
+
+.detalhe-container {
+    padding: 30px 20px 50px 20px;
+}
+
+.detalhe-voltar {
+    display: inline-block;
+    color: #030930;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 20px;
+    text-decoration: none;
+}
+
+.detalhe-voltar:hover {
+    text-decoration: underline;
+}
+
+.detalhe-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+/* ----- Galeria (reaproveita .carrossel do styleCarros.css) ----- */
+.detalhe-galeria .carrossel {
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 14px rgba(3, 9, 48, 0.08);
+}
+
+.detalhe-galeria .carrossel-slide img {
+    height: 460px;
+}
+
+@media (max-width: 900px) {
+    .detalhe-galeria .carrossel-slide img { height: 320px; }
+}
+
+@media (max-width: 600px) {
+    .detalhe-galeria .carrossel-slide img { height: 220px; }
+}
+
+/* Deixa as setinhas visíveis sobre as fotos claras */
+.detalhe-galeria .carrossel-seta {
+    background-color: rgba(3, 9, 48, 0.55);
+}
+
+.detalhe-galeria .carrossel-seta:hover {
+    background-color: rgba(3, 9, 48, 0.85);
+}
+
+/* ----- Painel de informações ----- */
+.detalhe-info {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 14px rgba(3, 9, 48, 0.05);
+}
+
+.detalhe-marca {
+    font-size: 13px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.detalhe-modelo {
+    font-size: 26px;
+    color: #030930;
+    margin: 4px 0 12px 0;
+}
+
+.detalhe-preco {
+    font-size: 28px;
+    font-weight: bold;
+    color: #030930;
+    margin-bottom: 20px;
+}
+
+.detalhe-specs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.detalhe-spec {
+    background: #f5f6fa;
+    border: 1px solid #e8edf2;
+    border-radius: 10px;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.spec-label {
+    font-size: 11px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.spec-valor {
+    font-size: 15px;
+    color: #0f172a;
+    font-weight: 600;
+}
+
+.detalhe-descricao {
+    margin-bottom: 25px;
+}
+
+.detalhe-subtitulo {
+    font-size: 12px;
+    font-weight: 600;
+    color: #94a3b8;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.detalhe-texto {
+    font-size: 14px;
+    color: #334155;
+    line-height: 1.6;
+}
+
+/* Botão WhatsApp */
+.btn-whatsapp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    background: #25d366;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.btn-whatsapp:hover {
+    background: #1da851;
+}
+
+.whatsapp-icone {
+    display: flex;
+    align-items: center;
+}
+
+/* Responsivo: empilha em tela pequena */
+@media (max-width: 900px) {
+    .detalhe-grid {
+        grid-template-columns: 1fr;
+    }
+}
