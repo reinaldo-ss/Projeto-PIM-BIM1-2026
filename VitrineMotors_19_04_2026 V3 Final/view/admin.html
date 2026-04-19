@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitrine Motors - Painel Administrador</title>
+
+    <!--Importações-->
+    <link rel="stylesheet" href="../css/styleGlobal.css">
+    <link rel="stylesheet" href="../css/styleAdmin.css">
+</head>
+<body>
+    <!-- Cabeçalho do administrador -->
+    <section id="secao-header-admin" class="cor_fundo">
+        <header class="cabecalho-admin content-section">
+            <div class="orientacao-logo-admin">
+                <img src="../img/logo-vm-branco.png" class="logo" alt="Logo Vitrine Motors">
+                <div>
+                    <h3>Vitrine Motors</h3>
+                    <p>Painel Administrativo</p>
+                </div>
+            </div>
+
+            <div class="admin-usuario">
+                <div class="admin-identidade">
+                    <span class="admin-avatar">A</span>
+                    <div class="admin-info">
+                        <p class="admin-nome">Administrador</p>
+                        <p class="admin-cargo">Acesso total</p>
+                    </div>
+                </div>
+                <button class="btn-sair">Sair</button>
+            </div>
+        </header>
+    </section>
+
+    <!-- Conteúdo principal -->
+    <section class="cor_fundo2">
+        <div class="content-section admin-conteudo">
+            <div class="admin-topo">
+                <div>
+                    <p class="admin-titulo">Carros cadastrados</p>
+                    <p class="admin-subtitulo">Gerencie o catálogo completo de veículos da plataforma</p>
+                </div>
+            </div>
+
+            <!-- Barra de ações -->
+            <div class="admin-acoes">
+                <button class="btn-novo-carro" onclick="carregarPagina('cadastrarCarro')">+ Novo carro</button>
+
+                <div class="admin-buscar">
+                    <input type="text" id="input-buscar-carro" placeholder="Buscar carro...">
+                </div>
+
+                <button class="btn-filtros">Filtros</button>
+                <button class="btn-relatorio">Gerar relatório</button>
+            </div>
+
+            <!-- Tabela de carros -->
+            <div class="admin-tabela-wrapper">
+                <table class="admin-tabela">
+                    <thead>
+                        <tr>
+                            <th>Imagem</th>
+                            <th>Nome do carro</th>
+                            <th>Preço</th>
+                            <th>Ano</th>
+                            <th>Cor</th>
+                            <th>Chassi</th>
+                            <th>Marca</th>
+                            <th class="col-acoes">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img src="https://placehold.co/80x50" alt="Carro" class="tabela-img"></td>
+                            <td>Classe E 250</td>
+                            <td>R$ 189.900</td>
+                            <td>2022</td>
+                            <td>Preto</td>
+                            <td>9BWZZZ377VT004251</td>
+                            <td>Mercedes-Benz</td>
+                            <td class="col-acoes">
+                                <button class="btn-alterar">Alterar</button>
+                                <button class="btn-deletar">Deletar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img src="https://placehold.co/80x50" alt="Carro" class="tabela-img"></td>
+                            <td>911 Carrera</td>
+                            <td>R$ 720.000</td>
+                            <td>2021</td>
+                            <td>Vermelho</td>
+                            <td>WP0ZZZ99ZTS392124</td>
+                            <td>Porsche</td>
+                            <td class="col-acoes">
+                                <button class="btn-alterar">Alterar</button>
+                                <button class="btn-deletar">Deletar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img src="https://placehold.co/80x50" alt="Carro" class="tabela-img"></td>
+                            <td>X5 M Sport</td>
+                            <td>R$ 510.000</td>
+                            <td>2023</td>
+                            <td>Branco</td>
+                            <td>5UXKR0C58H0X12345</td>
+                            <td>BMW</td>
+                            <td class="col-acoes">
+                                <button class="btn-alterar">Alterar</button>
+                                <button class="btn-deletar">Deletar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img src="https://placehold.co/80x50" alt="Carro" class="tabela-img"></td>
+                            <td>Civic Touring</td>
+                            <td>R$ 168.500</td>
+                            <td>2024</td>
+                            <td>Prata</td>
+                            <td>93HFC2650NZ112233</td>
+                            <td>Honda</td>
+                            <td class="col-acoes">
+                                <button class="btn-alterar">Alterar</button>
+                                <button class="btn-deletar">Deletar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img src="https://placehold.co/80x50" alt="Carro" class="tabela-img"></td>
+                            <td>Corolla Altis</td>
+                            <td>R$ 175.000</td>
+                            <td>2023</td>
+                            <td>Cinza</td>
+                            <td>9BRBL3HE5J0099887</td>
+                            <td>Toyota</td>
+                            <td class="col-acoes">
+                                <button class="btn-alterar">Alterar</button>
+                                <button class="btn-deletar">Deletar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
