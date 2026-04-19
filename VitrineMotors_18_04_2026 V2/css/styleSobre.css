@@ -1,0 +1,71 @@
+/* Banner */
+.texto-banner {
+    color: white;
+    margin: 40px 0px;
+}
+
+#titulo-banner {
+    font-size: 40px;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+#subtitulo-banner {
+    font-size: 20px;
+    text-align: center;
+}
+
+/* 1 Quadro*/
+.container-geral {
+    display: flex;
+    flex-direction: column; /* Faz ficar um embaixo do outro */
+    align-items: center;    /* Centraliza os quadros horizontalmente */
+    gap: 20px;
+}
+
+.div-missao, .div-sobre, .div-passos {
+    background-color: white;
+    border: solid 1px #ddd;
+    border-radius: 20px;
+    box-shadow: 0.4px 0.4px 20px rgba(0, 0, 0, 0.2);
+    width: 1000px;
+}
+
+.div-missao p, .div-sobre p{
+    margin: 30px 40px 30px 40px;
+    /* O SEGREDO PARA A LEITURA (Igual à foto 2): */
+    line-height: 1.5;       /* Aumenta o espaço entre as linhas do texto */
+    color: #333;
+}
+
+/* Passo a passo */
+.topicos {
+    display: flex;
+    margin: 10px;
+}
+
+.topico-vermelho {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: white;
+    background-color: red;
+    border-radius: 50px;
+    height: 50px;
+    width: 50px;
+    margin: 20px;
+
+    flex-shrink: 0;
+
+    font-weight: bold;
+}
+
+.passo {
+    margin: 20px 30px 0px 0px;
+}
+
+.titulo-passos {
+    font-weight: bold;
+}
