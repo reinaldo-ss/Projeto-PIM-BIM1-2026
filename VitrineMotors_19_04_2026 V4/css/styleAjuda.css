@@ -1,0 +1,164 @@
+/* Banner */
+.texto-banner {
+    color: white;
+    margin: 50px 0px;
+}
+
+#titulo-banner {
+    font-size: 40px;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Estilização icones dos input */
+svg {
+    width: 28px;
+    height: 28px;
+    fill: none;
+    stroke: #94a3b8;
+    stroke-width: 1.8;
+}
+.icone-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#subtitulo-banner {
+    font-size: 20px;
+    text-align: center;
+}
+
+/* Fale conosco */
+.alinhar-titulo {
+    display: flex;
+    justify-content: center;
+}
+
+.informacoes-contatos{
+    display: flex;
+    justify-content: center;
+}
+
+.enviar-email {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.contato-telefone, .contato-email {
+    display: flex;
+
+    background-color: white;
+    border: solid 1px #ddd;
+    border-radius: 20px;
+    box-shadow: 0.4px 0.4px 20px rgba(0, 0, 0, 0.2);
+
+    margin: 20px;
+    padding: 20px;
+
+    gap: 10px;
+    width: 350px;
+}
+
+/* Duvidas Frequentes */
+.caixa {
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 900px;
+    margin: 20px 0px;
+}
+
+/* Estilizando a parte de dentro quando abre */
+.conteudo {
+    padding: 0 20px 20px 20px;
+    color: #475569;
+    line-height: 1.6;
+}
+
+summary {
+    list-style: none; /* Remove a setinha padrão do navegador */
+    padding: 20px;
+    cursor: pointer;
+    color: #1e293b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+/* --- Estilizando o Ícone Personalizado (setinha-baixo) --- */
+summary::after {
+    content: '';
+    display: inline-block;
+    width: 20px;  /* Tamanho visível da sua setinha */
+    height: 20px; /* Tamanho visível da sua setinha */
+    
+    /* DEFINA SEU ÍCONE AQUI: */
+    background-color: #94a3b8; /* Cor padrão da setinha (cinza suave) */
+    
+    /* Usamos 'mask' para o seu ícone setinha-baixo. O background-color define a cor. */
+    -webkit-mask-image: url('../img/setinha-baixo.png'); /* Caminho para a sua imagem */
+    mask-image: url('../img/setinha-baixo.png');
+    
+    /* Configurações da máscara para o ícone setinha-baixo */
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+
+    /* Animação suave de rotação e cor */
+    transition: transform 0.3s ease, background-color 0.3s ease; 
+}
+
+/* --- Comportamento quando o details está ABERTO --- */
+details[open] summary::after {
+    transform: rotate(180deg); /* Gira a setinha para cima */
+    background-color: #000;    /* Muda a cor para preto sólido quando aberto */
+}
+/* =====================================================
+   Responsivo — Dispositivos portáteis (≤ 900px)
+   Banner menor, cards de contato empilhados e FAQ full-width
+   ===================================================== */
+@media (max-width: 900px) {
+
+    /* Banner */
+    .texto-banner {
+        margin: 30px 10px;
+    }
+
+    #titulo-banner {
+        font-size: 28px;
+    }
+
+    #subtitulo-banner {
+        font-size: 16px;
+    }
+
+    /* Contatos viram coluna */
+    .informacoes-contatos {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .contato-telefone,
+    .contato-email {
+        width: 100%;
+        max-width: 360px;
+        margin: 8px 0;
+    }
+
+    /* FAQ ocupa toda a largura */
+    .caixa {
+        max-width: 100%;
+    }
+
+    .enviar-email {
+        padding: 0 12px;
+    }
+}
