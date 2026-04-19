@@ -1,0 +1,266 @@
+/* ===== Estilização da tela Cadastrar Cliente ===== */
+
+/* Section geral que limita o tamanho */
+.section-cadastro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 0;
+}
+
+/* Div que engloba os itens internos */
+.tela-geral {
+    border: solid 1px #ddd;
+    border-radius: 20px;
+    display: flex;
+    width: 1200px;
+}
+
+/* Div com imagem na lateral */
+.info-lateral {
+    width: 500px;
+    min-width: 500px;
+    align-self: stretch;
+    border-radius: 20px 0 0 20px;
+
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+        url('../img/carro-tela-cadastro.jpg');
+
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    padding: 15px 15px;
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#sair {
+    color: white;
+    font-size: 20px;
+    font-weight: 550;
+    position: absolute;
+    top: 15px;
+    left: 18px;
+}
+
+#texto-central {
+    gap: 10px;
+    display: flex;
+    color: white;
+    margin-bottom: 120px;
+}
+
+#titulo-logo {
+    font-weight: bold;
+}
+
+/* Div que engloba os itens do cadastro */
+.cadastro-dados {
+    width: 650px;
+    margin: 20px 50px;
+}
+
+#titulo-cadastro {
+    display: flex;
+    justify-content: center;
+}
+
+/* Div que separa cada input */
+.inputs-gerais {
+    margin: 10px 0;
+    flex: 1;
+}
+
+/* Alinhamento dos Inputs */
+.grupo-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Estilização icones dos input */
+svg {
+    width: 28px;
+    height: 28px;
+    fill: none;
+    stroke: #94a3b8;
+    stroke-width: 1.8;
+}
+
+/* Inputs formatação geral */
+.grupo-input input::placeholder {
+    color: #c4cdd6;
+}
+
+.linha-dupla-inputs {
+    display: flex;
+    gap: 50px;
+}
+
+.grupo-input input,
+.grupo-input select {
+    flex: 1;
+    min-width: 0;
+    background: #f4f6f8;
+    border: 1px solid #e8edf2;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #0f172a;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+/* Linha */
+.linha-divisoria {
+    height: 1px;
+    background: #e2e8f0;
+    margin: 10px 0;
+}
+
+/* botao cadastrar */
+.botao-cadastrar {
+    width: 100%;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 10px 0px;
+    transition: background 0.2s;
+}
+
+.botao-cadastrar:hover {
+    background-color: #061261;
+}
+
+/* Rodapé com Voltar + Cadastrar lado a lado */
+.acoes-cliente {
+    display: flex;
+    gap: 10px;
+    margin: 10px 10px;
+}
+
+.acoes-cliente .botao-cadastrar {
+    flex: 3;
+    margin: 0;
+}
+
+.botao-voltar {
+    flex: 1;
+    background: #e2e8f0;
+    color: #475569;
+    border: none;
+    border-radius: 12px;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.botao-voltar:hover {
+    background: #cbd5e1;
+}
+
+.texto-termos {
+    font-size: 11.5px;
+    text-align: center;
+    margin-top: 10px;
+    line-height: 1.6;
+}
+
+.texto-termos a {
+    text-decoration: none;
+    color: rgb(36, 78, 214);
+}
+
+/* Links do rodape formulario */
+.links-rodape-form {
+    display: flex;
+    justify-content: space-around;
+}
+
+.links-rodape-form a {
+    font-size: 13px;
+    color: rgb(36, 78, 214);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.links-rodape-form a:hover {
+    text-decoration: underline;
+}
+
+/* =====================================================
+   Responsivo — Dispositivos portáteis (≤ 900px)
+   Empilha a coluna lateral em cima do formulário
+   ===================================================== */
+@media (max-width: 900px) {
+
+    .section-cadastro {
+        padding: 20px 10px;
+        min-height: auto;
+        align-items: flex-start;
+    }
+
+    .tela-geral {
+        flex-direction: column;
+        width: 100%;
+        max-width: 560px;
+    }
+
+    .info-lateral {
+        width: 100%;
+        min-width: 0;
+        min-height: 180px;
+        border-radius: 20px 20px 0 0;
+    }
+
+    #texto-central {
+        margin-bottom: 0;
+        text-align: center;
+    }
+
+    /* Corrige overflow: usa padding em vez de margin para não extrapolar o container */
+    .cadastro-dados {
+        width: 100%;
+        margin: 0;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    /* Pares de inputs lado a lado viram empilhados */
+    .linha-dupla-inputs {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    /* Remove margem horizontal que causava overflow */
+    .acoes-cliente {
+        flex-wrap: nowrap;
+        margin: 10px 0;
+    }
+
+    .links-rodape-form {
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+}
