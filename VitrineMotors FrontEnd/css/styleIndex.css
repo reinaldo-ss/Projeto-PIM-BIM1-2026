@@ -1,0 +1,505 @@
+/*-- Cabeçalho (estilo escuro - identidade admin) --*/
+#secao-header, #secao-header-logado {
+    padding: 14px 20px;
+}
+
+.orientacao-logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.orientacao-logo h3 {
+    color: white;
+    font-size: 18px;
+    margin: 0;
+}
+
+.orientacao-logo p {
+    color: #a0b0d0;
+    font-size: 12px;
+    margin: 0;
+    letter-spacing: 0.3px;
+}
+
+.cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.cabecalho a {
+    white-space: nowrap;
+    text-align: center;
+    color: #c0cde0;
+}
+
+/* ===== Menu desktop — visível acima de 900px ===== */
+.menu-desktop {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1;
+    justify-content: space-between;
+}
+
+.botoes {
+    display: flex;
+    gap: 8px;
+    padding: 10px;
+}
+
+.btn-todos {
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #c0cde0;
+    transition: all 0.25s ease;
+}
+
+.btn-todos:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: white;
+}
+
+/* Área direita do cabeçalho */
+.header-usuario {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+/* Botão Entrar/Cadastrar — branco com texto azul VitrineMotors */
+.btn-entrar-cadastrar {
+    background-color: white;
+    color: #030930 !important;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.25s ease;
+    border: 1px solid white;
+}
+
+.btn-entrar-cadastrar:hover {
+    background-color: transparent;
+    color: white !important;
+    border-color: white;
+}
+
+/* ===== Dropdown do usuário logado ===== */
+.user-dropdown {
+    position: relative;
+}
+
+.user-logado {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 14px 6px 6px;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+    user-select: none;
+}
+
+.user-logado:hover {
+    background-color: rgba(255, 255, 255, 0.16);
+}
+
+.user-seta {
+    color: #a0b0d0;
+    font-size: 12px;
+    margin-left: 2px;
+    transition: transform 0.25s ease;
+}
+
+.user-dropdown.aberto .user-seta {
+    transform: rotate(180deg);
+}
+
+.user-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    min-width: 220px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(3, 9, 48, 0.18);
+    border: 1px solid #e4e8f0;
+    padding: 8px;
+    display: none;
+    z-index: 100;
+}
+
+.user-dropdown.aberto .user-menu {
+    display: block;
+}
+
+.user-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #030930 !important;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.user-menu-item:hover {
+    background-color: #f2f4f9;
+}
+
+.user-menu-icone {
+    width: 22px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.user-menu-separador {
+    height: 1px;
+    background-color: #eef1f6;
+    margin: 6px 4px;
+}
+
+.user-menu-sair {
+    color: #c0392b !important;
+    font-weight: 600;
+}
+
+.user-menu-sair:hover {
+    background-color: #fdecea;
+}
+
+.user-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background-color: white;
+    color: #030930;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.user-info {
+    line-height: 1.2;
+}
+
+.user-nome {
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.user-cargo {
+    color: #a0b0d0;
+    font-size: 11px;
+    margin: 0;
+}
+
+/* ===== Controles mobile — ocultos no desktop ===== */
+.mobile-controls {
+    display: none;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Botão Entrar compacto para mobile */
+.btn-mobile-entrar {
+    background-color: white;
+    color: #030930 !important;
+    padding: 7px 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 12px;
+    white-space: nowrap;
+    transition: all 0.25s ease;
+    border: 1px solid white;
+}
+
+.btn-mobile-entrar:hover {
+    background-color: transparent;
+    color: white !important;
+}
+
+/* ===== Hamburguer dropdown ===== */
+.hamburger-dropdown-wrapper {
+    position: relative;
+}
+
+.btn-hamburguer {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.btn-hamburguer span {
+    display: block;
+    width: 26px;
+    height: 3px;
+    background-color: white;
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Animação: hamburguer vira "X" quando aberto */
+.btn-hamburguer.aberto span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.btn-hamburguer.aberto span:nth-child(2) {
+    opacity: 0;
+}
+
+.btn-hamburguer.aberto span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Dropdown do hamburguer — igual ao user-menu */
+.hamburger-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    min-width: 200px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(3, 9, 48, 0.18);
+    border: 1px solid #e4e8f0;
+    padding: 8px;
+    display: none;
+    z-index: 100;
+}
+
+.hamburger-dropdown-wrapper.aberto .hamburger-menu {
+    display: block;
+}
+
+.hamburger-menu-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #030930 !important;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.hamburger-menu-item:hover {
+    background-color: #f2f4f9;
+}
+
+/* ===== Avatar compacto do usuário no mobile ===== */
+.user-logado-mobile {
+    padding: 4px;
+    border-radius: 50%;
+    gap: 0;
+}
+
+.user-dropdown-mobile .user-menu {
+    right: 0;
+    left: auto;
+    transform: none;
+}
+
+/*-- Render dos arquivos --*/
+#conteudo {
+    flex: 1;
+}
+
+/*-- Rodapé --*/
+#secao-footer footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.rodape-colunas {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    padding-top: 48px;
+    padding-bottom: 40px;
+}
+
+.rodape-coluna {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rodape-titulo {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 0 8px 0;
+}
+
+.rodape-subtitulo {
+    color: #a0b0d0;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin: 0 0 12px 0;
+    border-bottom: 1px solid #1a2a6c;
+    padding-bottom: 8px;
+}
+
+.rodape-descricao {
+    color: #c0cde0;
+    font-size: 14px;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.rodape-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rodape-lista li {
+    color: #c0cde0;
+    font-size: 14px;
+}
+
+.rodape-link {
+    color: #c0cde0;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.rodape-link:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+/* Termos de Uso */
+.rodape-termos {
+    border-top: 1px solid #1a2a6c;
+    border-bottom: 1px solid #1a2a6c;
+    padding: 40px 0;
+}
+
+.rodape-termos .content-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.termos-data {
+    color: #7a8aaa;
+    font-size: 12px;
+    margin: -14px 0 4px 0;
+    font-style: italic;
+}
+
+.termos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 40px;
+}
+
+.termos-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.termos-topico {
+    color: #a0b0d0;
+    font-size: 13px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.termos-texto {
+    color: #8a9ab8;
+    font-size: 13px;
+    line-height: 1.65;
+    margin: 0;
+    text-align: justify;
+}
+
+/* Copyright */
+.rodape-copyright-inner {
+    color: #7a8aaa;
+    font-size: 13px;
+    padding: 16px 0;
+}
+
+/* =====================================================
+   Responsivo — Dispositivos portáteis (≤ 900px)
+   ===================================================== */
+@media (max-width: 900px) {
+
+    /* Cabeçalho: esconde menu desktop, mostra controles mobile */
+    .cabecalho {
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .menu-desktop {
+        display: none;
+    }
+
+    .mobile-controls {
+        display: flex;
+    }
+
+    /* Rodapé: 4 colunas → 2 colunas */
+    .rodape-colunas {
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        padding: 32px 20px;
+    }
+
+    .rodape-marca {
+        grid-column: 1 / -1;
+        text-align: center;
+    }
+
+    /* Termos: 2 colunas → 1 coluna */
+    .termos-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .rodape-termos {
+        padding: 28px 16px;
+    }
+}
+
+/* Telas muito pequenas: rodapé em 1 coluna só */
+@media (max-width: 560px) {
+    .rodape-colunas {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .rodape-lista {
+        align-items: center;
+    }
+}

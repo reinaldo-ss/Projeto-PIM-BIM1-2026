@@ -1,0 +1,313 @@
+/* ===== Estilização da tela Cadastrar Carro ===== */
+
+/* Section geral que limita o tamanho */
+.section-cadastro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 0;
+}
+
+/* Div que engloba os itens internos */
+.tela-geral {
+    border: solid 1px #ddd;
+    border-radius: 20px;
+    display: flex;
+    width: 1100px;
+}
+
+/* Div com imagem na lateral */
+.info-lateral {
+    width: 450px;
+    min-width: 450px;
+    align-self: stretch;
+    border-radius: 20px 0 0 20px;
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#sair {
+    color: white;
+    font-size: 20px;
+    font-weight: 550;
+    position: absolute;
+    top: 15px;
+    left: 18px;
+}
+
+#texto-central {
+    gap: 10px;
+    display: flex;
+    color: white;
+}
+
+#titulo-logo {
+    font-weight: bold;
+}
+
+/* Div que engloba os itens do cadastro */
+.cadastro-dados {
+    width: 650px;
+}
+
+#titulo-cadastro {
+    display: flex;
+    justify-content: center;
+    font-size: 16px;
+}
+
+/* Div que separa cada input */
+.inputs-gerais {
+    margin: 10px 0;
+    flex: 1;
+    min-width: 0;
+}
+
+/* Alinhamento dos Inputs */
+.grupo-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Estilização icones dos input */
+svg {
+    width: 28px;
+    height: 28px;
+    fill: none;
+    stroke: #94a3b8;
+    stroke-width: 1.8;
+    flex-shrink: 0;
+}
+
+.grupo-input input::placeholder,
+.grupo-input textarea::placeholder {
+    color: #c4cdd6;
+}
+
+.linha-dupla-inputs {
+    display: flex;
+    gap: 25px;
+}
+
+.linha-tripla-inputs {
+    display: flex;
+    gap: 20px;
+}
+
+.grupo-input input,
+.grupo-input select,
+.grupo-input textarea {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    background: #f4f6f8;
+    border: 1px solid #e8edf2;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #0f172a;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    box-sizing: border-box;
+}
+
+.grupo-input textarea {
+    resize: vertical;
+    font-family: inherit;
+}
+
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+/* Linha */
+.linha-divisoria {
+    height: 1px;
+    background: #e2e8f0;
+    margin: 10px 0;
+}
+
+/* botao cadastrar */
+.botao-cadastrar {
+    width: 100%;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 10px 0px;
+    transition: background 0.2s;
+}
+
+.botao-cadastrar:hover {
+    background-color: #061261;
+}
+
+/* ===== Específico do formulário Cadastrar Carro ===== */
+
+/* Versão compacta da área de dados */
+.cadastro-dados-carro {
+    width: 560px;
+    margin: 15px 40px;
+    font-size: 13px;
+}
+
+.cadastro-dados-carro label {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.cadastro-dados-carro .inputs-gerais {
+    margin: 6px 0;
+}
+
+.cadastro-dados-carro .grupo-input input,
+.cadastro-dados-carro .grupo-input select,
+.cadastro-dados-carro .grupo-input textarea {
+    padding: 7px 10px;
+    font-size: 13px;
+    border-radius: 8px;
+}
+
+.cadastro-dados-carro svg {
+    width: 22px;
+    height: 22px;
+}
+
+.cadastro-dados-carro .linha-divisoria {
+    margin: 6px 0;
+}
+
+/* Subtítulo de cada seção (INFORMAÇÕES DO VEÍCULO / FOTOS DO VEÍCULO) */
+.secao-subtitulo {
+    font-size: 12px;
+    font-weight: 600;
+    color: #94a3b8;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 10px 0;
+}
+
+/* Upload de fotos do veículo */
+.upload-foto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    height: 80px;
+    border: 2px dashed #e8edf2;
+    border-radius: 10px;
+    background: #f4f6f8;
+    cursor: pointer;
+    color: #94a3b8;
+    font-size: 12px;
+    text-align: center;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.upload-foto:hover {
+    border-color: #244ed6;
+    background: #eef2ff;
+}
+
+.upload-foto svg {
+    width: 26px;
+    height: 26px;
+}
+
+/* Rodapé com Voltar + Cadastrar lado a lado */
+.acoes-carro {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.acoes-carro .botao-cadastrar {
+    flex: 3;
+    margin: 0;
+}
+
+.botao-voltar {
+    flex: 1;
+    background: #e2e8f0;
+    color: #475569;
+    border: none;
+    border-radius: 12px;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.botao-voltar:hover {
+    background: #cbd5e1;
+}
+
+/* =====================================================
+   Responsivo — Dispositivos portáteis (≤ 900px)
+   Empilha a coluna lateral e colapsa linhas de 2 e 3 inputs
+   ===================================================== */
+@media (max-width: 900px) {
+
+    .section-cadastro {
+        padding: 20px 10px;
+        min-height: auto;
+    }
+
+    .tela-geral {
+        flex-direction: column;
+        width: 100%;
+        max-width: 560px;
+    }
+
+    .info-lateral {
+        width: 100%;
+        min-width: 0;
+        min-height: 180px;
+        border-radius: 20px 20px 0 0;
+    }
+
+    #texto-central {
+        margin-bottom: 0;
+        text-align: center;
+    }
+
+    /* Corrige overflow: usa padding em vez de margin para não extrapolar o container */
+    .cadastro-dados,
+    .cadastro-dados-carro {
+        width: 100%;
+        margin: 0;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    /* Pares e triplas de inputs viram empilhados */
+    .linha-dupla-inputs,
+    .cadastro-dados-carro .linha-dupla-inputs {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .linha-tripla-inputs {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .acoes-carro {
+        flex-wrap: nowrap;
+    }
+}
