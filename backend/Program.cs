@@ -9,6 +9,9 @@ builder.Services.AddScoped<MySqlConnectionFactory>();
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<CarroService>();
+builder.Services.AddScoped<UsuarioService>();
+builder.Services.AddScoped<ImagemService>();
+builder.Services.AddScoped<FavoritoService>();
 
 var app = builder.Build();
 
