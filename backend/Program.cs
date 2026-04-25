@@ -13,7 +13,19 @@ builder.Services.AddScoped<UsuarioService>();
 builder.Services.AddScoped<ImagemService>();
 builder.Services.AddScoped<FavoritoService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PermitirTudo", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
+
+app.UseCors("PermitirTudo");
 
 app.MapControllers();
 
