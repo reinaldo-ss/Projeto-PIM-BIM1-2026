@@ -5,11 +5,15 @@ using Microsoft.AspNetCore.Mvc;
 public class CarroController : ControllerBase
 {
     private readonly CarroService _service;
+    private readonly ImagemService _imagemService;
 
-    public CarroController(CarroService service)
+    public CarroController(CarroService service, ImagemService ImagemService)
     {
         _service = service;
+        _imagemService = ImagemService;
     }
+
+// Endpoint para listar os carros
 
     [HttpGet]
     public IActionResult Get()
@@ -24,30 +28,72 @@ public class CarroController : ControllerBase
         return Ok(carros);
     }
 
+// Endpoint para cadastrar os dados de um carro
+
     [HttpPost]
     public IActionResult Post([FromBody] Carro carro)
     {
-        _service.Cadastrar(carro);
-
         if (carro == null)
         {
             return BadRequest("Dados do carro inválidos");
         }
+
+        _service.Cadastrar(carro);
 
         return Ok("Carro inserido com sucesso");
     }
 
-    [HttpPut("{id}")]
-    public IActionResult Put(int id, [FromBody] Carro carro)
-    {
-        _service.Atualizar(id, carro);
+// Endpoint para cadastrar as fotos de um carro
 
-        if (carro == null)
+    [HttpPost]
+    public async Task<IActionResult> Post(
+        [FromForm] Carro carro, 
+        IFormFile FotoFrente, 
+        IFormFile FotoTraseira, 
+        IFormFile FotoLateralDireita, 
+        IFormFile FotoLateralEsquerda)
+    {
+        _service.Cadastrar(carro);
+
+        var pastaFotos = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "carros");
+        if (!Directory.Exists(pastaFotos)) Directory.CreateDirectory(pastaFotos);
+
+        // 3. Função simples para não repetir código: Salva a foto na pasta e no banco
+        async Task SalvarEGravarFoto(IFormFile foto) 
         {
-            return BadRequest("Dados do carro inválidos");
+            if (foto != null && foto.Length > 0) 
+            {
+                // Cria um nome único pra foto não substituir a de outros carros
+                var nomeArquivo = Guid.NewGuid().ToString() + Path.GetExtension(foto.FileName);
+                var caminhoCompleto = Path.Combine(pastaFotos, nomeArquivo);
+                
+                // Salva na pasta
+                using (var stream = new FileStream(caminhoCompleto, FileMode.Create)) {
+                    await foto.CopyToAsync(stream);
+                }
+
+                // O caminho relativo que vai ficar no banco
+                var caminhoBanco = "/img/carros/" + nomeArquivo;
+
+                // Chama o serviço para salvar apenas essa imagem atrelada ao chassi
+                var novaImagem = new Imagem
+                {
+                    Chassi = carro.Chassi,
+                    Caminho_imagem = caminhoBanco,
+                    Tipo_imagem = foto.Name
+                };
+
+                _imagemService.Cadastrar(novaImagem);
+            }
         }
 
-        return Ok("Carro atualizado");
+        // 4. Executa a função para as fotos que vieram do form
+        await SalvarEGravarFoto(FotoFrente);
+        await SalvarEGravarFoto(FotoTraseira);
+        await SalvarEGravarFoto(FotoLateralDireita);
+        await SalvarEGravarFoto(FotoLateralEsquerda);
+
+        return Ok("Carro e fotos cadastrados no estilo arroz com feijão!");
     }
 
     [HttpDelete("{id}")]
