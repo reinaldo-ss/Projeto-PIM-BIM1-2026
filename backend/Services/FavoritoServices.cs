@@ -29,8 +29,55 @@ public class FavoritoService
                         Id_favorito = reader.GetInt32("id_favorito"),
                         Usuario_id = reader.GetInt32("usuario_id"),
                         Carro_id = reader.GetInt32("carro_id"),
-                        Data_favorito = reader.GetDateTime("data_favorito")
                     });
+                }
+            }
+        }
+
+        return lista;
+    }
+
+    // Adicione este método dentro do seu FavoritoService
+    public List<Carro> ListarPorUsuario(int usuarioId)
+    {
+        var lista = new List<Carro>();
+
+        using (var conn = _connectionFactory.CreateConnection())
+        {
+            conn.Open();
+
+            var query = @"
+                SELECT c.id, c.chassi, c.modelo, c.marca, c.ano, c.cor, c.descricao, c.preco, i.caminho_imagem 
+                FROM Carro c 
+                INNER JOIN Favorito f ON c.id = f.carro_id 
+                LEFT JOIN Imagem i ON c.chassi = i.chassi AND i.tipo_imagem = 'FotoFrente'
+                WHERE f.usuario_id = @usuarioId";
+
+            var cmd = new MySqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@usuarioId", usuarioId);
+
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var carro = new Carro
+                    {
+                        Id = reader.GetInt32("id"),
+                        Chassi = reader.GetString("chassi"),
+                        Modelo = reader.GetString("modelo"),
+                        Marca = reader.GetString("marca"),
+                        Ano = reader.GetInt32("ano"),
+                        Cor = reader.GetString("cor"),
+                        // Descricao = reader.GetString("descricao"), // Se tiver descrição no seu model Carro
+                        Preco = reader.GetDecimal("preco")
+                    };
+
+                    if (!reader.IsDBNull(reader.GetOrdinal("caminho_imagem")))
+                    {
+                        carro.CaminhoImagem = reader.GetString("caminho_imagem");
+                    }
+
+                    lista.Add(carro);
                 }
             }
         }
@@ -44,25 +91,25 @@ public class FavoritoService
         {
             conn.Open();
 
-            var query = "INSERT INTO Favorito (usuario_id, carro_id, data_favorito) VALUES (@usuario_id, @carro_id, @data_favorito)";
+            var query = "INSERT INTO Favorito (usuario_id, carro_id) VALUES (@usuario_id, @carro_id)";
             var cmd = new MySqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@usuario_id", favorito.Usuario_id);
             cmd.Parameters.AddWithValue("@carro_id", favorito.Carro_id);
-            cmd.Parameters.AddWithValue("@data_favorito", favorito.Data_favorito);
 
             cmd.ExecuteNonQuery();
         }
     }
 
-    public void Deletar(int id)
+    public void Deletar(int usuarioId, int carroId)
     {
         using (var conn = _connectionFactory.CreateConnection())
         {
             conn.Open();
 
-            var query = "DELETE FROM Favorito WHERE id_favorito = @id";
+            var query = "DELETE FROM Favorito WHERE usuario_id = @usuarioID AND carro_id = @carroID";
             var cmd = new MySqlCommand(query, conn);
-            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Parameters.AddWithValue("@usuarioID", usuarioId);
+            cmd.Parameters.AddWithValue("@carroID", carroId);
 
             cmd.ExecuteNonQuery();
         }
@@ -78,7 +125,6 @@ public class FavoritoService
             var cmd = new MySqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@usuario_id", favorito.Usuario_id);
             cmd.Parameters.AddWithValue("@carro_id", favorito.Carro_id);
-            cmd.Parameters.AddWithValue("@data_favorito", favorito.Data_favorito);
             cmd.Parameters.AddWithValue("@id", id);
 
             cmd.ExecuteNonQuery();

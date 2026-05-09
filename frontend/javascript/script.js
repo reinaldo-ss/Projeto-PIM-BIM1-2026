@@ -3,39 +3,103 @@ async function listarCarros() {
     if (!container) return;
 
     try {
-        // Altere a porta para a mesma que você usou no Postman
         const response = await fetch('http://localhost:5147/api/carro');
         const carros = await response.json();
 
-        // Limpa o conteúdo estático (os placeholders)
         container.innerHTML = '';
 
-        // Cria cada card dinamicamente
         carros.forEach(carro => {
+            // 1. Resolvemos o caminho da imagem (Back-end vs Front-end)
+            let caminhoBanco = carro.caminhoImagem || carro.CaminhoImagem;
+            let urlFinalFoto;
+
+            if (caminhoBanco) {
+                urlFinalFoto = `http://localhost:5147${caminhoBanco}`;
+            } else {
+                urlFinalFoto = `https://placehold.co/400x250?text=${carro.modelo || carro.Modelo}`;
+            }
+
+            // 2. Montamos o HTML usando a urlFinalFoto
             container.innerHTML += `
-                <div class="card-carro" onclick="verDetalhes('${carro.chassi}')">
+                <div class="card-carro" onclick="verDetalhes('${carro.chassi || carro.Chassi}')">
                     <div class="card-img">
-                        <span class="card-ano">${carro.ano}</span>
-                        <span class="card-favorito" title="Favoritar" onclick="toggleFavorito(event, this)">☆</span>
-                        <img src="https://placehold.co/400x250?text=${carro.modelo}" alt="${carro.modelo}" />
+                        <span class="card-ano">${carro.ano || carro.Ano}</span>
+                        <span class="card-favorito" title="Favoritar" onclick="toggleFavorito(event, this, '${carro.id}')">☆</span>
+                        <img src="${urlFinalFoto}" alt="${carro.modelo || carro.Modelo}" />
                     </div>
                     <div class="card-info">
-                        <h3>${carro.marca} ${carro.modelo}</h3>
-                        <p>${carro.cor}</p>
-                        <p>R$ ${carro.preco.toLocaleString('pt-BR')}</p>
+                        <h3>${carro.marca || carro.Marca} ${carro.modelo || carro.Modelo}</h3>
+                        <p>${carro.cor || carro.Cor}</p>
+                        <p>R$ ${Number(carro.preco || carro.Preco).toLocaleString('pt-BR')}</p>
                         <p>📍 São Paulo - SP</p>
                     </div>
                 </div>
             `;
         });
         
-        // Atualiza o contador de veículos
         const subtitulo = document.querySelector('.subtitulo-mostruario');
         if (subtitulo) subtitulo.textContent = `${carros.length} veículos encontrados`;
 
     } catch (erro) {
         console.error("Erro ao carregar carros:", erro);
         container.innerHTML = '<p>Erro ao carregar o catálogo de veículos.</p>';
+    }
+}
+
+async function listarFavoritos() {
+    const container = document.querySelector('.catalogo');
+    if (!container) return;
+
+    const usuarioLogado = JSON.parse(localStorage.getItem('vm_usuario'));
+    
+    if (!usuarioLogado) {
+        container.innerHTML = '<p style="text-align:center; width:100%;">Faça login para ver seus favoritos.</p>';
+        return;
+    }
+
+    try {
+        const usuarioId = usuarioLogado.id || usuarioLogado.Id;
+        const response = await fetch(`http://localhost:5147/api/favorito/usuario/${usuarioId}`);
+        const carros = await response.json();
+
+        // Limpa os carros falsos do HTML
+        container.innerHTML = '';
+        
+        const subtitulo = document.querySelector('.subtitulo-mostruario');
+
+        if (carros.length === 0) {
+            container.innerHTML = '<p style="text-align:center; width:100%;">Você ainda não favoritou nenhum veículo.</p>';
+            if (subtitulo) subtitulo.textContent = '0 veículos salvos';
+            return;
+        }
+
+        if (subtitulo) subtitulo.textContent = `${carros.length} veículos salvos`;
+
+        carros.forEach(carro => {
+            let caminhoBanco = carro.caminhoImagem || carro.CaminhoImagem;
+            let urlFinalFoto = caminhoBanco 
+                ? `http://localhost:5147${caminhoBanco}` 
+                : `https://placehold.co/400x250?text=${carro.modelo || carro.Modelo}`;
+
+            container.innerHTML += `
+                <div class="card-carro" onclick="verDetalhes('${carro.chassi || carro.Chassi}')">
+                    <div class="card-img">
+                        <span class="card-ano">${carro.ano || carro.Ano}</span>
+                        <span class="card-favorito favoritado" title="Remover dos favoritos" onclick="toggleFavorito(event, this, '${carro.id || carro.Id}')">★</span>
+                        <img src="${urlFinalFoto}" alt="${carro.modelo || carro.Modelo}" />
+                    </div>
+                    <div class="card-info">
+                        <h3>${carro.marca || carro.Marca} ${carro.modelo || carro.Modelo}</h3>
+                        <p>${carro.cor || carro.Cor}</p>
+                        <p>R$ ${Number(carro.preco || carro.Preco).toLocaleString('pt-BR')}</p>
+                        <p>📍 São Paulo - SP</p>
+                    </div>
+                </div>
+            `;
+        });
+    } catch (erro) {
+        console.error("Erro ao carregar favoritos:", erro);
+        container.innerHTML = '<p style="text-align:center; width:100%;">Erro ao carregar seus favoritos.</p>';
     }
 }
 
@@ -57,7 +121,7 @@ function enviarCarro(event) {
     .then(response => {
         if (response.ok) {
             alert('Veículo cadastrado com sucesso!');
-            window.location.href = 'admin.html'; // Redireciona para a página do adm
+            carregarPagina('admin'); // Correção: Usa carregarPagina em vez de window.location.href
         } else {
             alert('Erro ao cadastrar o veículo. Verifique se preencheu todos os campos.');
             console.error('Status da resposta:', response.status);
@@ -96,6 +160,11 @@ function carregarPagina(pagina) {
                 inicializarCarrossel();
             } else if (pagina === 'detalhesCarro') {
                 inicializarCarrossel();
+                preencherDetalhesCarro();
+            } else if (pagina === 'conta') {
+                preencherDadosConta();
+            } else if (pagina === 'favoritos') {
+                listarFavoritos();
             }
         });
 }
@@ -155,6 +224,65 @@ async function deletarCarro(id) {
     }
 }
 
+// 1. Função engatilhada ao clicar no card (salva quem foi clicado)
+function verDetalhes(chassi) {
+    localStorage.setItem('vm_carro_detalhe', chassi);
+    carregarPagina('detalhesCarro');
+}
+
+// 2. A função inteligente que você sugeriu para popular os dados
+async function preencherDetalhesCarro() {
+    const chassi = localStorage.getItem('vm_carro_detalhe');
+    if (!chassi) return;
+
+    try {
+        // Reutilizamos a chamada da API!
+        const res = await fetch('http://localhost:5147/api/carro');
+        const carros = await res.json();
+
+        // Filtramos apenas o carro que o usuário clicou
+        const carro = carros.find(c => (c.chassi || c.Chassi) === chassi);
+
+        if (!carro) {
+            console.error("Carro não encontrado.");
+            return;
+        }
+
+        // Mapeia os dados garantindo letras maiúsculas ou minúsculas do C#
+        const marca = carro.marca || carro.Marca;
+        const modelo = carro.modelo || carro.Modelo;
+        const preco = Number(carro.preco || carro.Preco).toLocaleString('pt-BR');
+        const ano = carro.ano || carro.Ano;
+        const cor = carro.cor || carro.Cor;
+        const descricao = carro.descricao || carro.Descricao || "Nenhuma descrição informada pelo anunciante.";
+
+        // Injeta os dados dinamicamente nos seus IDs do HTML
+        document.getElementById('detalhe-marca').textContent = marca;
+        document.getElementById('detalhe-modelo-titulo').textContent = modelo;
+        document.getElementById('detalhe-preco').textContent = `R$ ${preco}`;
+        document.getElementById('detalhe-ano').textContent = ano;
+        document.getElementById('detalhe-cor').textContent = cor;
+        document.getElementById('detalhe-marca-spec').textContent = marca;
+        document.getElementById('detalhe-modelo-spec').textContent = modelo;
+        document.getElementById('detalhe-descricao-texto').textContent = descricao;
+
+        // Atualiza a Foto
+        let caminhoBanco = carro.caminhoImagem || carro.CaminhoImagem;
+        let urlFinalFoto = caminhoBanco 
+            ? `http://localhost:5147${caminhoBanco}` 
+            : `https://placehold.co/800x500?text=${modelo}`;
+            
+        document.getElementById('foto-principal-detalhe').src = urlFinalFoto;
+
+        // BÔNUS: Botão do WhatsApp já vai com o texto pronto!
+        const textoZap = encodeURIComponent(`Olá! Tenho interesse no ${marca} ${modelo} anunciado na Vitrine Motors.`);
+        document.getElementById('btn-whatsapp-dinamico').href = `https://wa.me/5511900000000?text=${textoZap}`;
+
+    } catch (erro) {
+        console.error("Erro ao carregar detalhes:", erro);
+    }
+}
+
 /* ===== Carrossel ===== */
 function inicializarCarrossel() {
     const trilho = document.getElementById('carrossel-trilho');
@@ -184,17 +312,28 @@ function inicializarCarrossel() {
 
 /* ===== Simulação de login ===== */
 function aplicarEstadoLogin() {
-    const header = document.getElementById('secao-header');
-    const headerLogado = document.getElementById('secao-header-logado');
-    if (!header) return;
-
+    // Apenas inverti a lógica para bater com os IDs confusos do HTML
+    const headerComPerfil = document.getElementById('secao-header'); // Onde está o João Silva
+    const headerComBotaoEntrar = document.getElementById('secao-header-logado'); // Onde está o Entrar/Cadastrar
+    
     const logado = localStorage.getItem('vm_logado') === 'true';
-    if (logado && headerLogado) {
-        header.style.display = 'none';
-        headerLogado.style.display = '';
+
+    if (logado) {
+        // Se está logado, mostra o perfil e esconde o botão de entrar
+        headerComPerfil.style.display = ''; 
+        headerComBotaoEntrar.style.display = 'none';
+        
+        // Atualiza o nome no header se tiver dados salvos
+        const usuarioString = localStorage.getItem('vm_usuario');
+        if (usuarioString) {
+            const usuario = JSON.parse(usuarioString);
+            const nome = usuario.nome || usuario.Nome || 'Usuário';
+            document.querySelectorAll('.user-nome').forEach(el => el.textContent = nome);
+        }
     } else {
-        header.style.display = '';
-        if (headerLogado) headerLogado.style.display = 'none';
+        // Se NÃO está logado, mostra o botão de entrar e esconde o perfil
+        headerComPerfil.style.display = 'none';
+        headerComBotaoEntrar.style.display = '';
     }
 }
 
@@ -205,6 +344,7 @@ function simularLogin() {
 
 function simularLogout() {
     localStorage.removeItem('vm_logado');
+    localStorage.removeItem('vm_usuario');
     aplicarEstadoLogin();
     carregarPagina('carros');
 }
@@ -227,11 +367,52 @@ function fecharUserMenu() {
 }
 
 /* ===== Favoritar carro ===== */
-function toggleFavorito(evento, elemento) {
+async function toggleFavorito(evento, elemento, carroID) {
     evento.stopPropagation();
-    const ativo = elemento.classList.toggle('ativo');
-    elemento.textContent = ativo ? '★' : '☆';
-    elemento.title = ativo ? 'Remover dos favoritos' : 'Favoritar';
+    
+    const usuarioLogado = JSON.parse(localStorage.getItem('vm_usuario'));
+    if (!usuarioLogado) {
+        alert("Você precisa estar logado para favoritar um carro!");
+        carregarPagina('login');
+        return;
+    }
+
+    const jaEstaFavoritado = elemento.classList.contains('favoritado');
+    const usuarioId = parseInt(usuarioLogado.id || usuarioLogado.Id);
+    const carroIdParsed = parseInt(carroID);
+
+    try {
+        if (jaEstaFavoritado) {
+            // ROTA DE DELETAR: IDs direto pela URL
+            const res = await fetch(`http://localhost:5147/api/favorito/${usuarioId}/${carroIdParsed}`, {
+                method: 'DELETE'
+            });
+
+            if (res.ok) {
+                elemento.classList.remove('favoritado');
+                elemento.textContent = '☆';
+                elemento.title = 'Favoritar';
+            }
+        } else {
+            // ROTA DE SALVAR: POST com Body
+            const res = await fetch(`http://localhost:5147/api/favorito`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    Usuario_id: usuarioId, 
+                    Carro_id: carroIdParsed
+                })
+            });
+
+            if (res.ok) {
+                elemento.classList.add('favoritado');
+                elemento.textContent = '★';
+                elemento.title = 'Remover dos favoritos';
+            }
+        }
+    } catch (error) {
+        console.error("Erro na comunicação com os favoritos:", error);
+    }
 }
 
 /* ===== Menu hamburguer (mobile ≤ 900px) =====
@@ -302,6 +483,49 @@ document.addEventListener('submit', function(e) {
         })
         .catch(erro => console.error('Erro na requisição CORS ou de Rede:', erro));
     }
+
+    // Verifica se é o formulário de login
+    if (e.target.id === 'formLogin') {
+        e.preventDefault();
+
+        const formData = new FormData(e.target);
+        const dadosLogin = {
+            email: formData.get('Email'),
+            senha: formData.get('Senha')
+        };
+
+        fetch('http://localhost:5147/api/usuario/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dadosLogin)
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('E-mail ou senha incorretos');
+            }
+        })
+        .then(usuario => {
+            localStorage.setItem('vm_logado', 'true');
+            localStorage.setItem('vm_usuario', JSON.stringify(usuario));
+
+            console.log("Login realizado com sucesso. Redirecionando...");
+
+            // Se for o administrador, redireciona para a página de admin
+            if (usuario.email === 'administrador@gmail.com') {
+                carregarPagina('admin');
+            } else {
+                carregarPagina('carros');
+            }
+        })
+        .catch(erro => {
+            alert(erro.message);
+            console.error('Erro no login:', erro);
+        });
+    }
 });
 
 function mostrarTermos() {
@@ -312,6 +536,118 @@ function mostrarTermos() {
     }, 400);
 }
 
+function fazerLogin(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const dadosLogin = Object.fromEntries(formData.entries());
+
+    fetch('http://localhost:5147/api/usuario/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dadosLogin)
+    })
+    .then(async response => {
+        if (response.ok) {
+            const usuario = await response.json();
+            
+            // Salva os dados reais do banco no navegador
+            localStorage.setItem('vm_usuario', JSON.stringify(usuario));
+            localStorage.setItem('vm_logado', 'true');
+
+            // Direciona o Admin pro painel, e o Cliente pra vitrine
+            if (usuario.email === 'administrador@gmail.com' || usuario.Email === 'administrador@gmail.com') {
+                carregarPagina('admin');
+            } else {
+                carregarPagina('carros');
+            }
+            aplicarEstadoLogin();
+        } else {
+            alert('E-mail ou senha incorretos.');
+        }
+    })
+    .catch(erro => console.error('Erro no login:', erro));
+}
+
+function preencherDadosConta() {
+    const usuarioString = localStorage.getItem('vm_usuario');
+    if (!usuarioString) return;
+
+    const usuario = JSON.parse(usuarioString);
+    
+    // Suporta tanto letra maiúscula quanto minúscula que vier do C#
+    const nome = usuario.nome || usuario.Nome || 'Usuário';
+    const email = usuario.email || usuario.Email;
+    
+    document.getElementById('info-nome-header').textContent = nome;
+    document.getElementById('info-email-header').textContent = email;
+    document.getElementById('info-nome').textContent = nome;
+    document.getElementById('info-email').textContent = email;
+    document.getElementById('info-telefone').textContent = usuario.telefone || usuario.Telefone || 'Não informado';
+    document.getElementById('info-estado').textContent = usuario.estado || usuario.Estado || 'Não informado';
+    document.getElementById('info-cidade').textContent = usuario.cidade || usuario.Cidade || 'Não informado';
+    
+    document.getElementById('info-avatar').textContent = nome.substring(0, 2).toUpperCase();
+}
+
+// 1. A função chamada quando você clica num card
+function verDetalhes(chassi) {
+    // Guarda o chassi no cache do navegador
+    localStorage.setItem('vm_carro_detalhe', chassi);
+    carregarPagina('detalhesCarro');
+}
+
+// 2. A função que preenche a página
+async function preencherDetalhesCarro() {
+    const chassi = localStorage.getItem('vm_carro_detalhe');
+    if (!chassi) return;
+
+    try {
+        // Busca a lista de carros no back-end
+        const res = await fetch('http://localhost:5147/api/carro');
+        const carros = await res.json();
+
+        // Encontra o carro específico que o usuário clicou
+        const carro = carros.find(c => (c.chassi || c.Chassi) === chassi);
+
+        if (!carro) {
+            alert("Detalhes do veículo não encontrados.");
+            carregarPagina('carros');
+            return;
+        }
+
+        // Mapeia os dados do C#
+        const marca = carro.marca || carro.Marca;
+        const modelo = carro.modelo || carro.Modelo;
+        const preco = Number(carro.preco || carro.Preco).toLocaleString('pt-BR');
+        const ano = carro.ano || carro.Ano;
+        const cor = carro.cor || carro.Cor;
+        const descricao = carro.descricao || carro.Descricao || "Nenhuma descrição informada pelo anunciante.";
+
+        // Injeta os dados no HTML
+        document.getElementById('detalhe-marca').textContent = marca;
+        document.getElementById('detalhe-modelo-titulo').textContent = modelo;
+        document.getElementById('detalhe-preco').textContent = `R$ ${preco}`;
+        document.getElementById('detalhe-ano').textContent = ano;
+        document.getElementById('detalhe-cor').textContent = cor;
+        document.getElementById('detalhe-marca-spec').textContent = marca;
+        document.getElementById('detalhe-modelo-spec').textContent = modelo;
+        document.getElementById('detalhe-descricao-texto').textContent = descricao;
+
+        // Atualiza a Foto
+        let caminhoBanco = carro.caminhoImagem || carro.CaminhoImagem;
+        let urlFinalFoto = caminhoBanco 
+            ? `http://localhost:5147${caminhoBanco}` 
+            : `https://placehold.co/800x500?text=${modelo}`;
+        document.getElementById('foto-principal-detalhe').src = urlFinalFoto;
+
+        // BÔNUS: O botão do WhatsApp já gera a mensagem com o nome do carro!
+        const textoZap = encodeURIComponent(`Olá! Tenho interesse no ${marca} ${modelo} anunciado na Vitrine Motors e gostaria de agendar um test drive.`);
+        document.getElementById('btn-whatsapp-dinamico').href = `https://wa.me/5511900000000?text=${textoZap}`;
+
+    } catch (erro) {
+        console.error("Erro ao carregar detalhes do veículo:", erro);
+    }
+}
 
 
 aplicarEstadoLogin();

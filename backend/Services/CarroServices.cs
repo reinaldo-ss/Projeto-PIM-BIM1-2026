@@ -17,14 +17,16 @@ public class CarroService
         {
             conn.Open();
 
-            var query = "SELECT id, chassi, modelo, marca, ano, cor, descricao, preco FROM Carro";
+            var query = @"SELECT c.id, c.chassi, c.modelo, c.marca, c.ano, c.cor, c.descricao, c.preco, i.caminho_imagem FROM Carro c
+                          LEFT JOIN Imagem i ON c.chassi = i.chassi AND i.tipo_imagem = 'FotoFrente'";
+            
             var cmd = new MySqlCommand(query, conn);
 
             using (var reader = cmd.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    lista.Add(new Carro
+                    var carro = new Carro
                     {
                         Id = reader.GetInt32("id"),
                         Chassi = reader.GetString("chassi"),
@@ -34,7 +36,13 @@ public class CarroService
                         Cor = reader.GetString("cor"),
                         Descricao = reader.GetString("descricao"),
                         Preco = reader.GetDecimal("preco")
-                    });
+                    };
+
+                    if (!reader.IsDBNull(reader.GetOrdinal("caminho_imagem")))
+                    {
+                        carro.CaminhoImagem = reader.GetString("caminho_imagem");
+                    }
+                    lista.Add(carro);
                 }
             }
         }

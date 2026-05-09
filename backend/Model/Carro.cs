@@ -7,5 +7,6 @@ public class Carro
     public int? Ano { get; set; }
     public string? Cor { get; set; }
     public string? Descricao { get; set; }
+    public string? CaminhoImagem { get; set; }
     public decimal Preco { get; set; }
 }

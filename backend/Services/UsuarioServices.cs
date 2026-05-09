@@ -94,4 +94,48 @@ public class UsuarioService
             cmd.ExecuteNonQuery();
         }
     }
+
+    public Usuario ValidarLogin(string email, string senha)
+    {
+        // Caso especial para o administrador solicitado
+        if (email == "administrador@gmail.com" && senha == "admin_senha_45789")
+        {
+            return new Usuario
+            {
+                Id = 0,
+                Nome = "Administrador",
+                Email = "administrador@gmail.com",
+                Senha = "admin_senha_45789"
+            };
+        }
+
+        using (var conn = _connectionFactory.CreateConnection())
+        {
+            conn.Open();
+
+            var query = "SELECT id, nome, email, senha, telefone, estado, cidade FROM Usuario WHERE email = @email AND senha = @senha";
+            var cmd = new MySqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@email", email);
+            cmd.Parameters.AddWithValue("@senha", senha);
+
+            using (var reader = cmd.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    return new Usuario
+                    {
+                        Id = reader.GetInt32("id"),
+                        Nome = reader.GetString("nome"),
+                        Email = reader.GetString("email"),
+                        Senha = reader.GetString("senha"),
+                        Telefone = reader.GetString("telefone"),
+                        Estado = reader.GetString("estado"),
+                        Cidade = reader.GetString("cidade")
+                    };
+                }
+            }
+        }
+
+        return null;
+    }
 };

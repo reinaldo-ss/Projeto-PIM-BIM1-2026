@@ -24,10 +24,23 @@ public class FavoritoController : ControllerBase
         return Ok(favoritos);
     }
 
+    [HttpGet("usuario/{usuarioId}")]
+    public IActionResult GetByUsuario(int usuarioId)
+    {
+        if (usuarioId <= 0)
+        {
+            return BadRequest("ID de usuário inválido");
+        }
+
+        var carrosFavoritos = _service.ListarPorUsuario(usuarioId);
+        
+        return Ok(carrosFavoritos);
+    }
+
     [HttpPost]
     public IActionResult Post([FromBody] Favorito favorito)
     {
-        
+        Console.WriteLine($"Recebido: Usuario {favorito.Usuario_id}, Carro {favorito.Carro_id}");
         if (favorito == null)
         {
             return BadRequest("Dados do favorito inválidos");
@@ -38,16 +51,17 @@ public class FavoritoController : ControllerBase
         return Ok("Imagem favorita adicionada com sucesso");
     }
 
-    [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    [HttpDelete("{usuarioId}/{carroId}")]
+    public IActionResult Delete(int usuarioId, int carroId)
     {
-        _service.Deletar(id);
 
-        if (id <= 0)
+        if (usuarioId <= 0 || carroId <= 0)
         {
-            return BadRequest("ID da imagem favorita inválido");
+            return BadRequest("IDs inválidos para remoção de carro favorito");
         }
-        
+
+        _service.Deletar(usuarioId, carroId);
+
         return Ok("Imagem favorita deletada");
     }
 }

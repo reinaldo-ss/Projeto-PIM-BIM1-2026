@@ -62,4 +62,22 @@ public class UsuarioController : ControllerBase
         
         return Ok("Usuário deletado");
     }
+
+    [HttpPost("login")]
+    public IActionResult Login([FromBody] Usuario loginRequest)
+    {
+        if (loginRequest == null || string.IsNullOrEmpty(loginRequest.Email) || string.IsNullOrEmpty(loginRequest.Senha))
+        {
+            return BadRequest("E-mail e senha são obrigatórios");
+        }
+
+        var usuario = _service.ValidarLogin(loginRequest.Email, loginRequest.Senha);
+
+        if (usuario == null)
+        {
+            return Unauthorized("E-mail ou senha inválidos");
+        }
+
+        return Ok(usuario);
+    }
 }
