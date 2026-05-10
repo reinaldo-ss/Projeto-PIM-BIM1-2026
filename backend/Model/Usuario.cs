@@ -7,4 +7,5 @@ public class Usuario
     public string ?Telefone { get; set; }
     public string ?Estado { get; set; }
     public string ?Cidade { get; set; }
+    public string ?Cpf { get; set; }
 }

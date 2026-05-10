@@ -31,7 +31,7 @@
                         <p class="admin-cargo">Acesso total</p>
                     </div>
                 </div>
-                <button class="btn-sair">Sair</button>
+                <button class="btn-sair" onclick="carregarPagina('login')">Sair</button>
             </div>
         </header>
     </section>
@@ -48,14 +48,14 @@
 
             <!-- Barra de ações -->
             <div class="admin-acoes">
-                <button class="btn-novo-carro" onclick="carregarPagina('cadastrarCarro')">+ Novo carro</button>
+                <button class="btn-novo-carro" onclick="novoCarro()">+ Novo carro</button>
 
                 <div class="admin-buscar">
                     <input type="text" id="input-buscar-carro" placeholder="Buscar carro...">
                 </div>
 
                 <button class="btn-filtros">Filtros</button>
-                <button class="btn-relatorio">Gerar relatório</button>
+                <button class="btn-relatorio" onclick="gerarRelatorio()">Gerar relatório</button>
             </div>
 
             <!-- Tabela de carros -->

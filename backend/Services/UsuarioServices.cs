@@ -17,7 +17,7 @@ public class UsuarioService
         {
             conn.Open();
 
-            var query = "SELECT id, nome, email, senha, telefone, estado, cidade FROM Usuario";
+            var query = "SELECT id, nome, cpf, email, senha, telefone, estado, cidade FROM Usuario";
             var cmd = new MySqlCommand(query, conn);
 
             using (var reader = cmd.ExecuteReader())
@@ -28,13 +28,15 @@ public class UsuarioService
                     {
                         Id = reader.GetInt32("id"),
                         Nome = reader.GetString("nome"),
+                        Cpf = reader.IsDBNull(reader.GetOrdinal("cpf")) ? "" : reader.GetString("cpf"),
                         Email = reader.GetString("email"),
                         Senha = reader.GetString("senha"),
-                        Telefone = reader.GetString("telefone"),
-                        Estado = reader.GetString("estado"),
-                        Cidade = reader.GetString("cidade")
+                        Telefone = reader.IsDBNull(reader.GetOrdinal("telefone")) ? "" : reader.GetString("telefone"),
+                        Estado = reader.IsDBNull(reader.GetOrdinal("estado")) ? "" : reader.GetString("estado"),
+                        Cidade = reader.IsDBNull(reader.GetOrdinal("cidade")) ? "" : reader.GetString("cidade")
                     });
                 }
+
             }
         }
 
@@ -47,9 +49,10 @@ public class UsuarioService
         {
             conn.Open();
 
-            var query = "INSERT INTO Usuario (nome, email, senha, telefone, estado, cidade) VALUES (@nome, @email, @senha, @telefone, @estado, @cidade)";
+            var query = "INSERT INTO Usuario (nome, cpf, email, senha, telefone, estado, cidade) VALUES (@nome, @cpf,@email, @senha, @telefone, @estado, @cidade)";
             var cmd = new MySqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@nome", usuario.Nome);
+            cmd.Parameters.AddWithValue("@cpf", usuario.Cpf);
             cmd.Parameters.AddWithValue("@email", usuario.Email);
             cmd.Parameters.AddWithValue("@senha", usuario.Senha);
             cmd.Parameters.AddWithValue("@telefone", usuario.Telefone);
@@ -81,9 +84,10 @@ public class UsuarioService
         {
             conn.Open();
 
-            var query = "UPDATE Usuario SET nome = @nome, email = @email, senha = @senha, telefone = @telefone, estado = @estado, cidade = @cidade WHERE id = @id";
+            var query = "UPDATE Usuario SET nome = @nome, cpf = @cpf, email = @email, senha = @senha, telefone = @telefone, estado = @estado, cidade = @cidade WHERE id = @id";
             var cmd = new MySqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@nome", usuario.Nome);
+            cmd.Parameters.AddWithValue("@cpf", usuario.Cpf);
             cmd.Parameters.AddWithValue("@email", usuario.Email);
             cmd.Parameters.AddWithValue("@senha", usuario.Senha);
             cmd.Parameters.AddWithValue("@telefone", usuario.Telefone);
@@ -113,7 +117,7 @@ public class UsuarioService
         {
             conn.Open();
 
-            var query = "SELECT id, nome, email, senha, telefone, estado, cidade FROM Usuario WHERE email = @email AND senha = @senha";
+            var query = "SELECT id, cpf, nome, email, senha, telefone, estado, cidade FROM Usuario WHERE email = @email AND senha = @senha";
             var cmd = new MySqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@email", email);
             cmd.Parameters.AddWithValue("@senha", senha);
@@ -125,12 +129,13 @@ public class UsuarioService
                     return new Usuario
                     {
                         Id = reader.GetInt32("id"),
+                        Cpf = reader.IsDBNull(reader.GetOrdinal("cpf")) ? "" : reader.GetString("cpf"),
                         Nome = reader.GetString("nome"),
                         Email = reader.GetString("email"),
                         Senha = reader.GetString("senha"),
-                        Telefone = reader.GetString("telefone"),
-                        Estado = reader.GetString("estado"),
-                        Cidade = reader.GetString("cidade")
+                        Telefone = reader.IsDBNull(reader.GetOrdinal("telefone")) ? "" : reader.GetString("telefone"),
+                        Estado = reader.IsDBNull(reader.GetOrdinal("estado")) ? "" : reader.GetString("estado"),
+                        Cidade = reader.IsDBNull(reader.GetOrdinal("cidade")) ? "" : reader.GetString("cidade")
                     };
                 }
             }

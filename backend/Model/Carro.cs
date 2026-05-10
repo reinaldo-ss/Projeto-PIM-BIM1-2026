@@ -7,6 +7,9 @@ public class Carro
     public int? Ano { get; set; }
     public string? Cor { get; set; }
     public string? Descricao { get; set; }
-    public string? CaminhoImagem { get; set; }
+    public string ?FotoFrente { get; set; }
+    public string ?FotoTraseira { get; set; }
+    public string ?FotoLateralDireita { get; set; }
+    public string ?FotoLateralEsquerda { get; set; }
     public decimal Preco { get; set; }
 }

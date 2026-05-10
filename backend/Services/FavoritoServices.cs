@@ -47,7 +47,8 @@ public class FavoritoService
             conn.Open();
 
             var query = @"
-                SELECT c.id, c.chassi, c.modelo, c.marca, c.ano, c.cor, c.descricao, c.preco, i.caminho_imagem 
+                SELECT c.id, c.chassi, c.modelo, c.marca, c.ano, c.cor, c.descricao, c.preco, 
+                       i.caminho_imagem AS FotoFrente 
                 FROM Carro c 
                 INNER JOIN Favorito f ON c.id = f.carro_id 
                 LEFT JOIN Imagem i ON c.chassi = i.chassi AND i.tipo_imagem = 'FotoFrente'
@@ -68,20 +69,16 @@ public class FavoritoService
                         Marca = reader.GetString("marca"),
                         Ano = reader.GetInt32("ano"),
                         Cor = reader.GetString("cor"),
-                        // Descricao = reader.GetString("descricao"), // Se tiver descrição no seu model Carro
                         Preco = reader.GetDecimal("preco")
                     };
 
-                    if (!reader.IsDBNull(reader.GetOrdinal("caminho_imagem")))
-                    {
-                        carro.CaminhoImagem = reader.GetString("caminho_imagem");
-                    }
+                    if (!reader.IsDBNull(reader.GetOrdinal("FotoFrente"))) 
+                        carro.FotoFrente = reader.GetString("FotoFrente");
 
                     lista.Add(carro);
                 }
             }
         }
-
         return lista;
     }
 

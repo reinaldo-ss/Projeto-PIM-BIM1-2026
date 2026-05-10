@@ -10,7 +10,7 @@ async function listarCarros() {
 
         carros.forEach(carro => {
             // 1. Resolvemos o caminho da imagem (Back-end vs Front-end)
-            let caminhoBanco = carro.caminhoImagem || carro.CaminhoImagem;
+            let caminhoBanco = carro.fotoFrente || carro.FotoFrente;
             let urlFinalFoto;
 
             if (caminhoBanco) {
@@ -76,7 +76,7 @@ async function listarFavoritos() {
         if (subtitulo) subtitulo.textContent = `${carros.length} veículos salvos`;
 
         carros.forEach(carro => {
-            let caminhoBanco = carro.caminhoImagem || carro.CaminhoImagem;
+            let caminhoBanco = carro.fotoFrente || carro.FotoFrente;
             let urlFinalFoto = caminhoBanco 
                 ? `http://localhost:5147${caminhoBanco}` 
                 : `https://placehold.co/400x250?text=${carro.modelo || carro.Modelo}`;
@@ -104,30 +104,79 @@ async function listarFavoritos() {
 }
 
 function enviarCarro(event) {
-    // 1. O FREIO ABSOLUTO: Impede o navegador de dar refresh e fazer o GET/POST padrão
-    event.preventDefault(); 
-
-    // 2. Captura o formulário exato que disparou o evento
+    event.preventDefault();
     const form = event.target;
-    
-    // 3. Empacota os dados (textos e fotos)
     const formData = new FormData(form);
+    const idEdicao = localStorage.getItem('vm_carro_edicao');
+    const url = idEdicao ? `http://localhost:5147/api/carro/${idEdicao}` : 'http://localhost:5147/api/Carro';
+    const metodo = idEdicao ? 'PUT' : 'POST';
 
     // 4. Envia para a API C#
-    fetch('http://localhost:5147/api/Carro', { 
-        method: 'POST',
+    fetch(url, { 
+        method: metodo,
         body: formData 
     })
     .then(response => {
         if (response.ok) {
-            alert('Veículo cadastrado com sucesso!');
-            carregarPagina('admin'); // Correção: Usa carregarPagina em vez de window.location.href
+            alert(idEdicao ? 'Veículo atualizado com sucesso!' : 'Veículo cadastrado com sucesso!');
+            localStorage.removeItem('vm_carro_edicao');
+            carregarPagina('admin');
         } else {
             alert('Erro ao cadastrar o veículo. Verifique se preencheu todos os campos.');
             console.error('Status da resposta:', response.status);
         }
     })
     .catch(erro => console.error('Erro na requisição (A API está rodando?):', erro));
+}
+
+function novoCarro() {
+    localStorage.removeItem('vm_carro_edicao');
+    carregarPagina('cadastrarCarro');
+}
+
+function prepararEdicaoCarro(id) {
+    localStorage.setItem('vm_carro_edicao', id);
+    carregarPagina('cadastrarCarro');
+}
+
+async function preencherFormularioEdicao() {
+    const idEdicao = localStorage.getItem('vm_carro_edicao');
+
+    const tituloForm = document.getElementById('titulo-form-carro');
+    const botaoSubmit = document.getElementById('btn-submit-carro');
+
+    if (!idEdicao) {
+        if (tituloForm) tituloForm.textContent = 'Formulátio Cadastrar Carro';
+        if (botaoSubmit) botaoSubmit.textContent = 'Cadastrar Veículo';
+        return;
+    }
+
+    if (tituloForm) tituloForm.textContent = 'Editar Dados do Veículo';
+    if (botaoSubmit) botaoSubmit.textContent = 'Salvar Dados';
+
+    try {
+        const res = await fetch('http://localhost:5147/api/carro');
+        const carros = await res.json();
+        const carro = carros.find(c => (c.id || c.Id) == idEdicao);
+
+        if (carro) {
+            document.getElementById('marca').value = carro.marca || carro.Marca || '';
+            document.getElementById('modelo').value = carro.modelo || carro.Modelo || '';
+            document.getElementById('ano').value = carro.ano || carro.Ano || '';
+            document.getElementById('cor').value = carro.cor || carro.Cor || '';
+            document.getElementById('chassi').value = carro.chassi || carro.Chassi || '';
+            document.getElementById('preco').value = carro.preco || carro.Preco || '';
+
+            const desc = document.getElementById('descricao');
+            if (desc) desc.value = carro.descricao || carro.Descricao;
+
+            document.getElementById('chassi').setAttribute('readonly', true);
+        }
+    }
+
+    catch (error) {
+        console.error("Erro ao atualizar os dados do carro", error);
+    }
 }
 
 function carregarPagina(pagina) {
@@ -152,7 +201,7 @@ function carregarPagina(pagina) {
                 footer.style.display = '';
             }
 
-            // GATILHOS DAS PÁGINAS (Sem repetições)
+            // GATILHOS DAS PÁGINAS
             if (pagina === 'admin') {
                 carregarTabelaAdmin();
             } else if (pagina === 'carros') {
@@ -163,8 +212,12 @@ function carregarPagina(pagina) {
                 preencherDetalhesCarro();
             } else if (pagina === 'conta') {
                 preencherDadosConta();
+            } else if (pagina === 'cadastrarCarro') {
+                preencherFormularioEdicao();
             } else if (pagina === 'favoritos') {
                 listarFavoritos();
+            } else if (pagina === 'cadastrarCliente') {
+                preencherFormularioEdicaoConta();
             }
         });
 }
@@ -177,10 +230,6 @@ async function carregarTabelaAdmin() {
         const res = await fetch('http://localhost:5147/api/carro');
         const carros = await res.json();
 
-        // MÁGICA DO DETETIVE: Pressione F12 no navegador e olhe a aba "Console"
-        // Isso vai mostrar exatamente o que o seu C# mandou do banco de dados!
-        console.log("DADOS QUE VIERAM DO BANCO (ADMIN):", carros);
-
         tabela.innerHTML = ''; // Limpa a tabela
         
         if (carros.length === 0) {
@@ -191,7 +240,6 @@ async function carregarTabelaAdmin() {
         carros.forEach(carro => {
             const idCarro = carro.id || carro.Id; 
             
-            // Garante que o preço seja tratado como número, mesmo se o C# mandar como string
             const precoSeguro = Number(carro.preco || carro.Preco || 0);
 
             tabela.innerHTML += `
@@ -204,7 +252,7 @@ async function carregarTabelaAdmin() {
                     <td>${carro.chassi || carro.Chassi}</td>
                     <td>${carro.marca || carro.Marca}</td>
                     <td class="col-acoes">
-                        <button class="btn-alterar">Alterar</button>
+                        <button class="btn-alterar" onclick="prepararEdicaoCarro(${idCarro})">Alterar</button>
                         <button class="btn-deletar" onclick="deletarCarro(${idCarro})">Deletar</button>
                     </td>
                 </tr>`;
@@ -224,23 +272,21 @@ async function deletarCarro(id) {
     }
 }
 
-// 1. Função engatilhada ao clicar no card (salva quem foi clicado)
 function verDetalhes(chassi) {
     localStorage.setItem('vm_carro_detalhe', chassi);
     carregarPagina('detalhesCarro');
 }
 
-// 2. A função inteligente que você sugeriu para popular os dados
 async function preencherDetalhesCarro() {
     const chassi = localStorage.getItem('vm_carro_detalhe');
     if (!chassi) return;
 
     try {
-        // Reutilizamos a chamada da API!
+        // 1. Busca os carros na API (Isso tinha sido apagado sem querer)
         const res = await fetch('http://localhost:5147/api/carro');
         const carros = await res.json();
 
-        // Filtramos apenas o carro que o usuário clicou
+        // 2. Encontra o carro específico pelo chassi
         const carro = carros.find(c => (c.chassi || c.Chassi) === chassi);
 
         if (!carro) {
@@ -248,7 +294,7 @@ async function preencherDetalhesCarro() {
             return;
         }
 
-        // Mapeia os dados garantindo letras maiúsculas ou minúsculas do C#
+        // 3. Mapeia os dados do banco para variáveis
         const marca = carro.marca || carro.Marca;
         const modelo = carro.modelo || carro.Modelo;
         const preco = Number(carro.preco || carro.Preco).toLocaleString('pt-BR');
@@ -256,7 +302,7 @@ async function preencherDetalhesCarro() {
         const cor = carro.cor || carro.Cor;
         const descricao = carro.descricao || carro.Descricao || "Nenhuma descrição informada pelo anunciante.";
 
-        // Injeta os dados dinamicamente nos seus IDs do HTML
+        // 4. Injeta os TEXTOS no HTML
         document.getElementById('detalhe-marca').textContent = marca;
         document.getElementById('detalhe-modelo-titulo').textContent = modelo;
         document.getElementById('detalhe-preco').textContent = `R$ ${preco}`;
@@ -266,17 +312,28 @@ async function preencherDetalhesCarro() {
         document.getElementById('detalhe-modelo-spec').textContent = modelo;
         document.getElementById('detalhe-descricao-texto').textContent = descricao;
 
-        // Atualiza a Foto
-        let caminhoBanco = carro.caminhoImagem || carro.CaminhoImagem;
-        let urlFinalFoto = caminhoBanco 
-            ? `http://localhost:5147${caminhoBanco}` 
-            : `https://placehold.co/800x500?text=${modelo}`;
-            
-        document.getElementById('foto-principal-detalhe').src = urlFinalFoto;
+        // 5. Injeta as 4 FOTOS no HTML (Agora com as URLs corretas)
+        const urlBase = 'http://localhost:5147';
 
-        // BÔNUS: Botão do WhatsApp já vai com o texto pronto!
+        let urlFrente = (carro.fotoFrente || carro.FotoFrente) ? `${urlBase}${carro.fotoFrente || carro.FotoFrente}` : `https://placehold.co/800x500?text=Frente`;
+        let imgFrente = document.getElementById('foto-principal-detalhe');
+        if (imgFrente) imgFrente.src = urlFrente;
+
+        let urlTraseira = (carro.fotoTraseira || carro.FotoTraseira) ? `${urlBase}${carro.fotoTraseira || carro.FotoTraseira}` : `https://placehold.co/800x500?text=Traseira`;
+        let imgTras = document.getElementById('foto-traseira-detalhe');
+        if (imgTras) imgTras.src = urlTraseira;
+
+        let urlLateralDireita = (carro.fotoLateralDireita || carro.FotoLateralDireita) ? `${urlBase}${carro.fotoLateralDireita || carro.FotoLateralDireita}` : `https://placehold.co/800x500?text=Lateral+Direita`;
+        let imgDir = document.getElementById('foto-lateral-direita-detalhe') || document.getElementById('foto-latdir-detalhe');
+        if (imgDir) imgDir.src = urlLateralDireita;
+
+        let urlLateralEsquerda = (carro.fotoLateralEsquerda || carro.FotoLateralEsquerda) ? `${urlBase}${carro.fotoLateralEsquerda || carro.FotoLateralEsquerda}` : `https://placehold.co/800x500?text=Lateral+Esquerda`;
+        let imgEsq = document.getElementById('foto-lateral-esquerda-detalhe') || document.getElementById('foto-latesq-detalhe');
+        if (imgEsq) imgEsq.src = urlLateralEsquerda;
+
+        // 6. Configura o botão de WhatsApp dinâmico
         const textoZap = encodeURIComponent(`Olá! Tenho interesse no ${marca} ${modelo} anunciado na Vitrine Motors.`);
-        document.getElementById('btn-whatsapp-dinamico').href = `https://wa.me/5511900000000?text=${textoZap}`;
+        document.getElementById('btn-whatsapp-dinamico').href = `https://wa.me/5511900000000?text=${textoZap}`;  
 
     } catch (erro) {
         console.error("Erro ao carregar detalhes:", erro);
@@ -456,32 +513,44 @@ document.addEventListener('submit', function(e) {
 
         // Monta o objeto JSON garantindo que as chaves batam com as propriedades do C#
         const dadosUsuario = {
-            nome: formData.get('Nome'),
-            email: formData.get('Email'),
-            senha: formData.get('Senha'),
-            telefone: formData.get('Telefone'),
-            estado: formData.get('Estado'),
-            cidade: formData.get('Cidade')
+            nome: formData.get('Nome') || formData.get('nome'),
+            cpf: formData.get('Cpf') || formData.get('cpf'),
+            email: formData.get('Email') || formData.get('email'),
+            senha: formData.get('Senha') || formData.get('senha'),
+            telefone: formData.get('Telefone') || formData.get('telefone'),
+            estado: formData.get('Estado') || formData.get('estado'),
+            cidade: formData.get('Cidade') || formData.get('cidade')
         };
 
+        const idEdicao = localStorage.getItem('vm_usuario_edicao');
+        const url = idEdicao ? `http://localhost:5147/api/usuario/${idEdicao}` : 'http://localhost:5147/api/usuario';
+        const metodo = idEdicao ? 'PUT' : 'POST';
+
         // Dispara para a API
-        fetch('http://localhost:5147/api/usuario', { 
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+        fetch(url, { 
+            method: metodo,
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(dadosUsuario)
         })
         .then(response => {
             if (response.ok) {
-                alert('Cliente cadastrado com sucesso!');
+                alert(idEdicao ? 'Dados atualizados com sucesso!' : 'Cliente cadastrado com sucesso!');
                 carregarPagina('login'); // Redireciona para o login
+            
+                if (idEdicao) {
+                    localStorage.setItem('vm_usuario', JSON.stringify(dadosUsuario));
+                    localStorage.removeItem('vm_usuario_edicao');
+                    preencherDadosConta();
+                    carregarPagina('conta');
+                } else {
+                    carregarPagina('login');
+                }
             } else {
-                alert('Erro ao cadastrar cliente. Verifique o console.');
+                alert('Erro salvar dados. Verifique o console');
                 console.error('Status:', response.status);
             }
         })
-        .catch(erro => console.error('Erro na requisição CORS ou de Rede:', erro));
+        .catch(erro => console.error('Erro: ', erro));
     }
 
     // Verifica se é o formulário de login
@@ -581,6 +650,7 @@ function preencherDadosConta() {
     document.getElementById('info-nome-header').textContent = nome;
     document.getElementById('info-email-header').textContent = email;
     document.getElementById('info-nome').textContent = nome;
+    document.getElementById('info-cpf').textContent = usuario.cpf || usuario.Cpf || 'Não Informado';
     document.getElementById('info-email').textContent = email;
     document.getElementById('info-telefone').textContent = usuario.telefone || usuario.Telefone || 'Não informado';
     document.getElementById('info-estado').textContent = usuario.estado || usuario.Estado || 'Não informado';
@@ -589,66 +659,114 @@ function preencherDadosConta() {
     document.getElementById('info-avatar').textContent = nome.substring(0, 2).toUpperCase();
 }
 
-// 1. A função chamada quando você clica num card
-function verDetalhes(chassi) {
-    // Guarda o chassi no cache do navegador
-    localStorage.setItem('vm_carro_detalhe', chassi);
-    carregarPagina('detalhesCarro');
+function logoutAdmin() {
+    localStorage.removeItem('vm_logado');
+    localStorage.removeItem('vm_usuario');
+
+    aplicarEstadoLogin();
+
+    carregarPagina('cadastrarCliente');
 }
 
-// 2. A função que preenche a página
-async function preencherDetalhesCarro() {
-    const chassi = localStorage.getItem('vm_carro_detalhe');
-    if (!chassi) return;
-
+async function gerarRelatorio() {
     try {
-        // Busca a lista de carros no back-end
         const res = await fetch('http://localhost:5147/api/carro');
         const carros = await res.json();
 
-        // Encontra o carro específico que o usuário clicou
-        const carro = carros.find(c => (c.chassi || c.Chassi) === chassi);
-
-        if (!carro) {
-            alert("Detalhes do veículo não encontrados.");
-            carregarPagina('carros');
+        if (carros.length === 0) {
+            alert("Não há carros cadastrados para gerar relatório.");
             return;
         }
 
-        // Mapeia os dados do C#
-        const marca = carro.marca || carro.Marca;
-        const modelo = carro.modelo || carro.Modelo;
-        const preco = Number(carro.preco || carro.Preco).toLocaleString('pt-BR');
-        const ano = carro.ano || carro.Ano;
-        const cor = carro.cor || carro.Cor;
-        const descricao = carro.descricao || carro.Descricao || "Nenhuma descrição informada pelo anunciante.";
+        let csv = "ID | Marca | Modelo | Ano | Cor | Preco | Chassi\n";
 
-        // Injeta os dados no HTML
-        document.getElementById('detalhe-marca').textContent = marca;
-        document.getElementById('detalhe-modelo-titulo').textContent = modelo;
-        document.getElementById('detalhe-preco').textContent = `R$ ${preco}`;
-        document.getElementById('detalhe-ano').textContent = ano;
-        document.getElementById('detalhe-cor').textContent = cor;
-        document.getElementById('detalhe-marca-spec').textContent = marca;
-        document.getElementById('detalhe-modelo-spec').textContent = modelo;
-        document.getElementById('detalhe-descricao-texto').textContent = descricao;
+        carros.forEach(carro => {
+            csv += `${carro.id || carro.Id} | "${carro.marca || carro.Marca}" | "${carro.modelo || carro.Modelo}" | ${carro.ano || carro.Ano} | "${carro.cor || carro.Cor}" | ${carro.preco || carro.Preco} | "${carro.chassi || carro.Chassi}"\n`;
+        });
 
-        // Atualiza a Foto
-        let caminhoBanco = carro.caminhoImagem || carro.CaminhoImagem;
-        let urlFinalFoto = caminhoBanco 
-            ? `http://localhost:5147${caminhoBanco}` 
-            : `https://placehold.co/800x500?text=${modelo}`;
-        document.getElementById('foto-principal-detalhe').src = urlFinalFoto;
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;'});
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
 
-        // BÔNUS: O botão do WhatsApp já gera a mensagem com o nome do carro!
-        const textoZap = encodeURIComponent(`Olá! Tenho interesse no ${marca} ${modelo} anunciado na Vitrine Motors e gostaria de agendar um test drive.`);
-        document.getElementById('btn-whatsapp-dinamico').href = `https://wa.me/5511900000000?text=${textoZap}`;
+        link.setAttribute("href", url);
+        link.setAttribute("download", "relatorio_carros.csv");
+        link.style.visibility = 'hidden';
 
-    } catch (erro) {
-        console.error("Erro ao carregar detalhes do veículo:", erro);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+    } catch (error) {
+        console.error("Erro ao gerar relatório:", error);
+        alert("Erro ao gerar relatório. Confira o terminal para mais detalhes.");
     }
 }
 
+async function deletarConta() {
+    const usuarioLogado = JSON.parse(localStorage.getItem('vm_usuario'));
+    if (!usuarioLogado) return;
+
+    const confirmacao = confirm("Tem certeza que deseja excluir sua conta? Essa ação não pode ser desfeita.");
+
+    if (confirmacao) {
+        try {
+            const id = usuarioLogado.id || usuarioLogado.Id;
+
+            const res = await fetch(`http://localhost:5147/api/usuario/${id}`, {method: 'DELETE'});
+
+            if (res.ok) {
+                alert("Conta excluída com sucesso.");
+                simularLogout();
+            } else {
+                alert("Erro ao excluir conta. Verifique o console para detalhes.");
+                console.error("Status da resposta:", res.status);
+            }
+        } catch (error) {
+            console.error("Erro ao excluir conta: ", error);
+        }
+    }
+
+}
+
+function prepararEdicaoConta() {
+    const usuarioLogado = JSON.parse(localStorage.getItem('vm_usuario'));
+    if (!usuarioLogado) return;
+
+    const senhaAtual = usuarioLogado.senha || usuarioLogado.Senha;
+
+    const senhaDigitada = prompt("Antes de editar seus dados, digite sua SENHA para prosseguir: ");
+
+    if (senhaDigitada === senhaAtual) {
+        localStorage.setItem('vm_usuario_edicao', usuarioLogado.id || usuarioLogado.Id);
+        carregarPagina('cadastrarCliente');
+    } else {
+        alert("Senha incorreta. Acesso negado.");
+    }
+}
+
+function preencherFormularioEdicaoConta() {
+    const idEdicao = localStorage.getItem('vm_usuario_edicao');
+    if (!idEdicao) return;
+
+    const usuarioLogado = JSON.parse(localStorage.getItem('vm_usuario'));
+    const form = document.getElementById('formCadastrarCliente');
+    if (!form || !usuarioLogado) return;
+
+    const btnSubmit = form.querySelector('button[type="submit"]');
+    if (btnSubmit) btnSubmit.textContent = 'Salvar Dados';
+
+    const preencher = (nomeCampo, valor) => {
+        const input = form.querySelector(`[name="${nomeCampo}"]`);
+        if (input) input.value = valor || '';
+    }
+
+    form.querySelector('[name="Nome"]').value = usuarioLogado.nome || usuarioLogado.Nome || '';
+    form.querySelector('[name="Cpf"]').value = usuarioLogado.cpf || usuarioLogado.Cpf || '';
+    form.querySelector('[name="Email"]').value = usuarioLogado.email || usuarioLogado.Email || '';
+    form.querySelector('[name="Telefone"]').value = usuarioLogado.telefone || usuarioLogado.Telefone || '';
+    form.querySelector('[name="Estado"]').value = usuarioLogado.estado || usuarioLogado.Estado || '';
+    form.querySelector('[name="Cidade"]').value = usuarioLogado.cidade || usuarioLogado.Cidade || '';
+}
 
 aplicarEstadoLogin();
 carregarPagina('carros');

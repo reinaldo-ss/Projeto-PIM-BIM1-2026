@@ -17,8 +17,16 @@ public class CarroService
         {
             conn.Open();
 
-            var query = @"SELECT c.id, c.chassi, c.modelo, c.marca, c.ano, c.cor, c.descricao, c.preco, i.caminho_imagem FROM Carro c
-                          LEFT JOIN Imagem i ON c.chassi = i.chassi AND i.tipo_imagem = 'FotoFrente'";
+            var query = @"SELECT c.id, c.chassi, c.modelo, c.marca, c.ano, c.cor, c.descricao, c.preco,
+                          i1.caminho_imagem AS FotoFrente,
+                          i2.caminho_imagem AS FotoTraseira,
+                          i3.caminho_imagem AS FotoLateralDireita, 
+                          i4.caminho_imagem AS FotoLateralEsquerda
+                          FROM Carro c
+                          LEFT JOIN Imagem i1 ON c.chassi = i1.chassi AND i1.tipo_imagem = 'FotoFrente'
+                          LEFT JOIN Imagem i2 ON c.chassi = i2.chassi AND i2.tipo_imagem = 'FotoTraseira'
+                          LEFT JOIN Imagem i3 ON c.chassi = i3.chassi AND i3.tipo_imagem = 'FotoLateralDireita'
+                          LEFT JOIN Imagem i4 ON c.chassi = i4.chassi AND i4.tipo_imagem = 'FotoLateralEsquerda'";
             
             var cmd = new MySqlCommand(query, conn);
 
@@ -38,10 +46,11 @@ public class CarroService
                         Preco = reader.GetDecimal("preco")
                     };
 
-                    if (!reader.IsDBNull(reader.GetOrdinal("caminho_imagem")))
-                    {
-                        carro.CaminhoImagem = reader.GetString("caminho_imagem");
-                    }
+                    if (!reader.IsDBNull(reader.GetOrdinal("FotoFrente"))) carro.FotoFrente = reader.GetString("FotoFrente");
+                    if (!reader.IsDBNull(reader.GetOrdinal("FotoTraseira"))) carro.FotoTraseira = reader.GetString("FotoTraseira");
+                    if (!reader.IsDBNull(reader.GetOrdinal("FotoLateralDireita"))) carro.FotoLateralDireita = reader.GetString("FotoLateralDireita");
+                    if (!reader.IsDBNull(reader.GetOrdinal("FotoLateralEsquerda"))) carro.FotoLateralEsquerda = reader.GetString("FotoLateralEsquerda");
+                    
                     lista.Add(carro);
                 }
             }

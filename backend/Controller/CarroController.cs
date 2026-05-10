@@ -13,7 +13,7 @@ public class CarroController : ControllerBase
         _imagemService = ImagemService;
     }
 
-// Endpoint para listar os carros
+    // Endpoint para listar os carros
 
     [HttpGet]
     public IActionResult Get()
@@ -28,7 +28,7 @@ public class CarroController : ControllerBase
         return Ok(carros);
     }
 
-// Endpoint para cadastrar os dados de um carro
+    // Endpoint para cadastrar os dados de um carro
 
     [HttpPost]
     public IActionResult Post([FromBody] Carro carro)
@@ -43,14 +43,14 @@ public class CarroController : ControllerBase
         return Ok("Carro inserido com sucesso");
     }
 
-// Endpoint para cadastrar as fotos de um carro
+    // Endpoint para cadastrar as fotos de um carro
 
     [HttpPost]
     public async Task<IActionResult> Post(
-        [FromForm] Carro carro, 
-        IFormFile FotoFrente, 
-        IFormFile FotoTraseira, 
-        IFormFile FotoLateralDireita, 
+        [FromForm] Carro carro,
+        IFormFile FotoFrente,
+        IFormFile FotoTraseira,
+        IFormFile FotoLateralDireita,
         IFormFile FotoLateralEsquerda)
     {
         _service.Cadastrar(carro);
@@ -59,16 +59,17 @@ public class CarroController : ControllerBase
         if (!Directory.Exists(pastaFotos)) Directory.CreateDirectory(pastaFotos);
 
         // 3. Função simples para não repetir código: Salva a foto na pasta e no banco
-        async Task SalvarEGravarFoto(IFormFile foto) 
+        async Task SalvarEGravarFoto(IFormFile foto)
         {
-            if (foto != null && foto.Length > 0) 
+            if (foto != null && foto.Length > 0)
             {
                 // Cria um nome único pra foto não substituir a de outros carros
                 var nomeArquivo = Guid.NewGuid().ToString() + Path.GetExtension(foto.FileName);
                 var caminhoCompleto = Path.Combine(pastaFotos, nomeArquivo);
-                
+
                 // Salva na pasta
-                using (var stream = new FileStream(caminhoCompleto, FileMode.Create)) {
+                using (var stream = new FileStream(caminhoCompleto, FileMode.Create))
+                {
                     await foto.CopyToAsync(stream);
                 }
 
@@ -96,6 +97,26 @@ public class CarroController : ControllerBase
         return Ok("Carro e fotos cadastrados no estilo arroz com feijão!");
     }
 
+    [HttpPut("{id}")]
+    public IActionResult Put(int id, [FromForm] Carro carro)
+    {
+        if (id <= 0)
+        {
+            return BadRequest("ID inválido");
+        }
+
+        try
+        {
+            _service.Atualizar(id, carro);
+
+            return Ok("Veículo atualizado com sucesso");
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Erro interno: {ex.Message}");
+        }
+    }
+
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
@@ -105,7 +126,7 @@ public class CarroController : ControllerBase
         {
             return BadRequest("ID do carro inválido");
         }
-        
+
         return Ok("Carro deletado");
     }
 }
