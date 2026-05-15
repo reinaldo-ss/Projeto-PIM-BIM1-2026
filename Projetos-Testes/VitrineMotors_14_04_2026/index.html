@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitrine Motors</title>
+
+    <!--Imporatações-->
+    <script src="./javascript/script.js" defer></script>
+    <link rel="stylesheet" href="./css/styleIndex.css">
+    <link rel="stylesheet" href="./css/styleGlobal.css">
+
+</head>
+<body>
+    <section>
+        <header class="cabecalho content-section">
+            <div class="orientacao-logo">
+                <img src="./img/logo.png" id="logo">
+                    <div>
+                        <h3>Vitrine Motors</h3>
+                        <p>Encontre o carro perfeito</p>
+                    </div>
+            </div>
+            <nav class="">
+                <a id="btn-sobre" onclick="carregarPagina('sobrenos')"><i></i>Sobre Nós</a>
+                <a id="btn-ajuda" onclick="carregarPagina('ajuda')"><i></i>Ajuda</a>
+                <a id="btn-cadastrar" onclick="carregarPagina('cadastrar')"><i></i>Entrar/Cadastrar</a>
+            </nav>
+        </header>
+    </section>
+
+    <!--Carregando paginas-->
+    <div id="conteudo"></div>
+
+    <section class="cor_fundo">
+        <footer class="content-section rodape">
+            <p id="titulo-rodape">Vitrine Motors</p>
+            <p id="descricao-rodape">
+                Conectamos você diretamente ao dono do carro, facilitando
+                a negociação de forma rápida, transparente e sem intermediários.
+            </p>
+            <div id="orientar-copyright">
+                <span>Tel: (11) 4002-8922</span>
+                <span>&copy; 2026 - VitrineMotors - <a asp-area="" asp-controller="Home" asp-action="Privacy">Sobre
+                    nós</a>
+                </span>
+            </div>
+        </footer>
+    </section>
+</body>
+</html>
+<!--@* Biblioteca jQuery — necessária para alguns recursos do Bootstrap *@
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+@* JavaScript do Bootstrap (menus, modais, etc.) *@
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+@* JavaScript personalizado do projeto *@
+<script src="~/js/site.js" asp-append-version="true"></script>
+@* Permite que cada página adicione seus próprios scripts aqui *@
+@await RenderSectionAsync("Scripts", required: false)-->

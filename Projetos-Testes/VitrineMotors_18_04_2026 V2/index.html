@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitrine Motors</title>
+
+    <!--Imporatações-->
+    <script src="./javascript/script.js" defer></script>
+    <link rel="stylesheet" href="./css/styleIndex.css">
+    <link rel="stylesheet" href="./css/styleGlobal.css">
+
+</head>
+<body>
+    <section id="secao-header">
+        <header class="cabecalho content-section">
+            <div class="orientacao-logo">
+                <img src="./img/logo.png" class="logo">
+                    <div>
+                        <h3>Vitrine Motors</h3>
+                        <p>Encontre o carro perfeito</p>
+                    </div>
+            </div>
+            <nav class="botoes">
+                <a class="btn-todos" onclick="carregarPagina('carros')">Inicio</a>
+                <a class="btn-todos" onclick="carregarPagina('sobrenos')">Sobre Nós</a>
+                <a class="btn-todos" onclick="carregarPagina('ajuda')">Ajuda</a>
+                <a class="btn-todos" onclick="carregarPagina('cadastrar')">Entrar/Cadastrar</a>
+            </nav>
+        </header>
+    </section>
+
+    <!--Carregando paginas-->
+    <div id="conteudo"></div>
+
+    <section id="secao-footer" class="cor_fundo">
+        <footer>
+            <!-- Colunas principais do rodapé -->
+            <div class="rodape-colunas content-section">
+                <div class="rodape-coluna rodape-marca">
+                    <p class="rodape-titulo">Vitrine Motors</p>
+                    <p class="rodape-descricao">
+                        Conectamos você diretamente ao dono do carro, facilitando
+                        a negociação de forma rápida, transparente e sem intermediários.
+                    </p>
+                </div>
+
+                <div class="rodape-coluna">
+                    <p class="rodape-subtitulo">Navegação</p>
+                    <ul class="rodape-lista">
+                        <li><a onclick="carregarPagina('carros')" class="rodape-link">Carros</a></li>
+                        <li><a onclick="carregarPagina('sobrenos')" class="rodape-link">Sobre Nós</a></li>
+                        <li><a onclick="carregarPagina('ajuda')" class="rodape-link">Ajuda</a></li>
+                        <li><a onclick="carregarPagina('cadastrar')" class="rodape-link">Cadastrar</a></li>
+                    </ul>
+                </div>
+
+                <div class="rodape-coluna">
+                    <p class="rodape-subtitulo">Contato</p>
+                    <ul class="rodape-lista">
+                        <li>Tel: (11) 4002-8922</li>
+                        <li>contato@vitoremotors.com.br</li>
+                        <li>Seg–Sex: 8h às 18h</li>
+                    </ul>
+                </div>
+
+                <div class="rodape-coluna">
+                    <p class="rodape-subtitulo">Legal</p>
+                    <ul class="rodape-lista">
+                        <li><a href="#termos-de-uso" class="rodape-link">Termos de Uso</a></li>
+                        <li><a href="#termos-de-uso" class="rodape-link">Política de Privacidade</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Seção de Termos de Uso -->
+            <div id="termos-de-uso" class="rodape-termos">
+                <div class="content-section">
+                    <p class="rodape-subtitulo">Termos de Uso — Vitrine Motors</p>
+                    <p class="termos-data">Última atualização: 18 de abril de 2026</p>
+                    <div class="termos-grid">
+                        <div class="termos-item">
+                            <p class="termos-topico">1. Sobre a Plataforma</p>
+                            <p class="termos-texto">A Vitrine Motors é uma plataforma online que conecta compradores e vendedores de veículos usados, permitindo a negociação direta entre as partes, sem a intermediação de revendas. Ao utilizar nossos serviços, você aceita integralmente estes Termos de Uso.</p>
+                        </div>
+                        <div class="termos-item">
+                            <p class="termos-topico">2. Cadastro e Conta</p>
+                            <p class="termos-texto">Para acessar todas as funcionalidades da plataforma, é necessário realizar o cadastro com informações verdadeiras e atualizadas. O usuário é responsável por manter a confidencialidade de sua senha e por todas as atividades realizadas em sua conta.</p>
+                        </div>
+                        <div class="termos-item">
+                            <p class="termos-topico">3. Uso dos Dados Pessoais</p>
+                            <p class="termos-texto">Os dados coletados (nome, CPF, telefone, e-mail e localização) são utilizados exclusivamente para identificação, comunicação e melhoria dos nossos serviços. Não compartilhamos informações pessoais com terceiros sem o seu consentimento, exceto quando exigido por lei.</p>
+                        </div>
+                        <div class="termos-item">
+                            <p class="termos-topico">4. Anúncios e Responsabilidade</p>
+                            <p class="termos-texto">A Vitrine Motors atua como vitrine de anúncios e não se responsabiliza pela veracidade das informações fornecidas pelos vendedores. Recomendamos que o comprador realize a devida diligência antes de concluir qualquer negociação, incluindo a vistoria do veículo.</p>
+                        </div>
+                        <div class="termos-item">
+                            <p class="termos-topico">5. Conduta do Usuário</p>
+                            <p class="termos-texto">É proibido publicar anúncios falsos, ofensivos ou enganosos. O uso da plataforma para fins ilícitos resultará no cancelamento imediato da conta. A Vitrine Motors reserva-se o direito de remover qualquer conteúdo que viole estas diretrizes.</p>
+                        </div>
+                        <div class="termos-item">
+                            <p class="termos-topico">6. Alterações nos Termos</p>
+                            <p class="termos-texto">A Vitrine Motors pode atualizar estes Termos de Uso periodicamente. As alterações serão comunicadas aos usuários cadastrados por e-mail. O uso contínuo da plataforma após as modificações implica na aceitação dos novos termos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="content-section rodape-copyright-inner">
+                <span>&copy; 2026 VitrineMotors — Todos os direitos reservados.</span>
+            </div>
+        </footer>
+    </section>
+</body>
+</html>
+<!--@* Biblioteca jQuery — necessária para alguns recursos do Bootstrap *@
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+@* JavaScript do Bootstrap (menus, modais, etc.) *@
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+@* JavaScript personalizado do projeto *@
+<script src="~/js/site.js" asp-append-version="true"></script>
+@* Permite que cada página adicione seus próprios scripts aqui *@
+@await RenderSectionAsync("Scripts", required: false)-->

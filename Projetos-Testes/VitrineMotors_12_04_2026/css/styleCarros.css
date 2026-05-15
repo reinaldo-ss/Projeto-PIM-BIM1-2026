@@ -1,0 +1,108 @@
+/* Banner */
+.texto-banner {
+    color: white;
+    margin: 40px 0px;
+}
+
+#titulo-banner {
+    font-size: 64px;
+    text-align: center;
+    font-weight: bold;
+}
+
+#subtitulo-banner {
+    font-size: 32px;
+    text-align: center;
+}
+
+/* barra pesquisa */
+.pesquisa {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0px;
+}
+
+#input-pesquisa {
+    width: 1000px;
+}
+
+
+.barra_de_pesquisa input {
+    width: 1160px;
+}
+
+/* Mostruario */
+.texto-mostruario {
+    padding: 20px;
+    justify-content: center;
+}
+
+.titulo-mostruario {
+    padding-left: 20px;
+    font-size: 24px;
+    margin-bottom: 0.25rem !important;
+    font-weight: bold;
+}
+
+.subtitulo-mostruario {
+    padding-left: 20px;
+}
+
+/* Catálogo de carros */
+
+.section-pesquisa{
+    box-shadow: 0 0.4px 20px rgba(0, 0, 0, 0.1);
+    position: relative; 
+    z-index: 1;
+}
+
+.catalogo {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 20px;
+    padding: 20px;
+}
+
+.card-carro {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 300px;
+}
+
+.card-img {
+    position: relative;
+}
+
+.card-img img {
+    width: 100%;
+    display: block;
+}
+
+.card-ano {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: red;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.card-info {
+    padding: 15px;
+}
+
+.card-info h3 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+}
+
+.card-info p {
+    margin: 3px 0;
+    font-size: 14px;
+    color: #555;
+}
