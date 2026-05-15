@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitrine Motors - Carros</title>
+
+    <!--Importações-->
+    <script src="../javascript/script.js" defer></script>
+    <link rel="stylesheet" href="../css/styleCarros.css">
+    <link rel="stylesheet" href="../css/styleGlobal.css">
+
+</head>
+<body>
+    <section class="section-carrossel">
+        <div class="content-section">
+            <div class="carrossel" id="carrossel">
+                <button class="carrossel-seta carrossel-seta-esq" onclick="moverCarrossel(-1)">‹</button>
+
+                <div class="carrossel-viewport">
+                    <div class="carrossel-trilho" id="carrossel-trilho">
+                        <div class="carrossel-slide">
+                            <img  src="./img/carro1.png" alt="Destaque 1">
+                        </div>
+                        <div class="carrossel-slide">
+                            <img src="./img/carro2.jpg" alt="Destaque 2">
+                        </div>
+                        <div class="carrossel-slide">
+                            <img src="./img/carro3.jpg" alt="Destaque 3">
+                        </div>
+                        <div class="carrossel-slide">
+                            <img src="./img/carro4.jpg" alt="Destaque 4">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="carrossel-seta carrossel-seta-dir" onclick="moverCarrossel(1)">›</button>
+
+                <div class="carrossel-indicadores">
+                    <span class="indicador ativo" onclick="irParaSlide(0)"></span>
+                    <span class="indicador" onclick="irParaSlide(1)"></span>
+                    <span class="indicador" onclick="irParaSlide(2)"></span>
+                    <span class="indicador" onclick="irParaSlide(3)"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-pesquisa">
+        <div class="content-section pesquisa">
+            <div class="barra_de_pesquisa">
+                <input type="text" name="" id="input-pesquisa" placeholder="Buscar por marca ou modelo...">
+            </div>
+            <button id="filtro_pesquisa">Filtros</button>
+        </div>
+    </section>
+
+
+    <section>
+        <div class="texto-mostruario content-section">
+            <p class="titulo-mostruario">Carros Disponíveis</p>
+            <p class="subtitulo-mostruario">X veículos encontrados</p>
+
+        <!--Cards dos carros-->
+        <section class="catalogo">
+
+            <!-- Card 1 -->
+            <div class="card-carro" onclick="carregarPagina('detalhesCarro')">
+                <div class="card-img">
+                    <span class="card-ano">2022</span>
+                    <span class="card-favorito" title="Favoritar" onclick="toggleFavorito(event, this)">☆</span>
+                    <img src="https://placehold.co/400x250" alt="Foto do carro" />
+                </div>
+                <div class="card-info">
+                    <h3>Mercedes-Benz Classe E 250</h3>
+                    <p>Preto</p>
+                    <p>🔄 25.000 km</p>
+                    <p>📅 Automático • Gasolina</p>
+                    <p>📍 São Paulo - SP</p>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="card-carro" onclick="carregarPagina('detalhesCarro')">
+                <div class="card-img">
+                    <span class="card-ano">2021</span>
+                    <span class="card-favorito" title="Favoritar" onclick="toggleFavorito(event, this)">☆</span>
+                    <img src="https://placehold.co/400x250" alt="Foto do carro" />
+                </div>
+                <div class="card-info">
+                    <h3>Porsche 911 Carrera</h3>
+                    <p>Vermelho</p>
+                    <p>🔄 18.000 km</p>
+                    <p>📅 Automático • Gasolina</p>
+                    <p>📍 Rio de Janeiro - RJ</p>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card-carro" onclick="carregarPagina('detalhesCarro')">
+                <div class="card-img">
+                    <span class="card-ano">2023</span>
+                    <span class="card-favorito" title="Favoritar" onclick="toggleFavorito(event, this)">☆</span>
+                    <img src="https://placehold.co/400x250" alt="Foto do carro" />
+                </div>
+                <div class="card-info">
+                    <h3>BMW X5 M Sport</h3>
+                    <p>Branco</p>
+                    <p>🔄 12.000 km</p>
+                    <p>📅 Automático • Híbrido</p>
+                    <p>📍 Campinas - SP</p>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="card-carro" onclick="carregarPagina('detalhesCarro')">
+                <div class="card-img">
+                    <span class="card-ano">2023</span>
+                    <span class="card-favorito" title="Favoritar" onclick="toggleFavorito(event, this)">☆</span>
+                    <img src="https://placehold.co/400x250" alt="Foto do carro" />
+                </div>
+                <div class="card-info">
+                    <h3>BMW X5 M Sport</h3>
+                    <p>Branco</p>
+                    <p>🔄 12.000 km</p>
+                    <p>📅 Automático • Híbrido</p>
+                    <p>📍 Campinas - SP</p>
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="card-carro" onclick="carregarPagina('detalhesCarro')">
+                <div class="card-img">
+                    <span class="card-ano">2023</span>
+                    <span class="card-favorito" title="Favoritar" onclick="toggleFavorito(event, this)">☆</span>
+                    <img src="https://placehold.co/400x250" alt="Foto do carro" />
+                </div>
+                <div class="card-info">
+                    <h3>BMW X5 M Sport</h3>
+                    <p>Branco</p>
+                    <p>🔄 12.000 km</p>
+                    <p>📅 Automático • Híbrido</p>
+                    <p>📍 Campinas - SP</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    </section>
+
+</body>
+</html>

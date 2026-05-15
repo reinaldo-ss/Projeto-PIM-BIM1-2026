@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitrine Motors - Detalhes do Carro</title>
+
+    <!--Importações-->
+    <script src="./javascript/script.js" defer></script>
+    <link rel="stylesheet" href="../css/styleCarros.css">
+    <link rel="stylesheet" href="../css/styleDetalhe.css">
+    <link rel="stylesheet" href="../css/styleGlobal.css">
+
+</head>
+<body>
+    <section>
+        <div class="content-section detalhe-container">
+
+            <a class="detalhe-voltar" onclick="carregarPagina('carros')">‹ Voltar</a>
+
+            <div class="detalhe-grid">
+
+                <!-- Coluna esquerda: carrossel de fotos do carro -->
+                <div class="detalhe-galeria">
+                    <div class="carrossel" id="carrossel">
+                        <button class="carrossel-seta carrossel-seta-esq" onclick="moverCarrossel(-1)">‹</button>
+
+                        <div class="carrossel-viewport">
+                            <div class="carrossel-trilho" id="carrossel-trilho">
+                                <div class="carrossel-slide">
+                                    <img src="https://placehold.co/800x500?text=Frente" alt="Frente" id="foto-principal-detalhe">
+                                </div>
+                                <div class="carrossel-slide">
+                                    <img src="https://placehold.co/800x500?text=Traseira" alt="Traseira" id="foto-traseira-detalhe">
+                                </div>
+                                <div class="carrossel-slide">
+                                    <img src="https://placehold.co/800x500?text=Lateral+Direita" alt="Lateral direita" id="foto-lateral-direita-detalhe">
+                                </div>
+                                <div class="carrossel-slide">
+                                    <img src="https://placehold.co/800x500?text=Lateral+Esquerda" alt="Lateral esquerda" id="foto-lateral-esquerda-detalhe">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="carrossel-seta carrossel-seta-dir" onclick="moverCarrossel(1)">›</button>
+
+                        <div class="carrossel-indicadores">
+                            <span class="indicador ativo" onclick="irParaSlide(0)"></span>
+                            <span class="indicador" onclick="irParaSlide(1)"></span>
+                            <span class="indicador" onclick="irParaSlide(2)"></span>
+                            <span class="indicador" onclick="irParaSlide(3)"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coluna direita: informações do carro -->
+                <div class="detalhe-info">
+                    <p class="detalhe-marca" id="detalhe-marca">Marca</p>
+                    <h2 class="detalhe-modelo" id="detalhe-modelo-titulo">Modelo</h2>
+                    <p class="detalhe-preco" id="detalhe-preco">R$ 0,00</p>
+
+                    <div class="detalhe-specs">
+                        <div class="detalhe-spec">
+                            <span class="spec-label">Ano</span>
+                            <span class="spec-valor" id="detalhe-ano">0000</span>
+                        </div>
+                        <div class="detalhe-spec">
+                            <span class="spec-label">Cor</span>
+                            <span class="spec-valor" id="detalhe-cor">Indefinida</span>
+                        </div>
+                        <div class="detalhe-spec">
+                            <span class="spec-label">Marca</span>
+                            <span class="spec-valor" id="detalhe-marca-spec">-</span>
+                        </div>
+                        <div class="detalhe-spec">
+                            <span class="spec-label">Modelo</span>
+                            <span class="spec-valor" id="detalhe-modelo-spec">-</span>
+                        </div>
+                    </div>
+
+                    <div class="detalhe-descricao">
+                        <p class="detalhe-subtitulo">Descrição</p>
+                        <p class="detalhe-texto" id="detalhe-descricao-texto">
+                            Carregando detalhes do veículo...
+                        </p>
+                    </div>
+
+                    <a class="btn-whatsapp" id="btn-whatsapp-dinamico" href="#" target="_blank" rel="noopener">
+                        <img src="./img/whatsapp.svg" alt="WhatsApp" width="22" height="22">
+                        Agendar test drive pelo WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
