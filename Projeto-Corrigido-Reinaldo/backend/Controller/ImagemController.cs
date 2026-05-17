@@ -29,7 +29,7 @@ public class ImagemController : ControllerBase
     {
         _service.Cadastrar(imagem);
 
-        if (imagem == null)
+        if (imagem == null || !imagem.ValidarDadosImagem())
         {
             return BadRequest("Dados da imagem inválidos");
         }
@@ -42,7 +42,7 @@ public class ImagemController : ControllerBase
     {
         _service.Atualizar(id, imagem);
 
-        if (imagem == null)
+        if (imagem == null || !imagem.ValidarDadosImagem())
         {
             return BadRequest("Dados da imagem inválidos");
         }

@@ -27,7 +27,7 @@ public class UsuarioController : ControllerBase
     [HttpPost]
     public IActionResult Post([FromBody] Usuario usuario)
     {
-        if (usuario == null)
+        if (usuario == null || !usuario.ValidarDadosUsuario())
         {
             return BadRequest("Dados do usuário inválidos");
         }
@@ -40,7 +40,7 @@ public class UsuarioController : ControllerBase
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] Usuario usuario)
     {
-        if (usuario == null)
+        if (usuario == null || !usuario.ValidarDadosUsuario())
         {
             return BadRequest("Dados do usuário inválidos");
         }

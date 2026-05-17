@@ -33,7 +33,7 @@ public class CarroController : ControllerBase
     [HttpPost]
     public IActionResult Post([FromBody] Carro carro)
     {
-        if (carro == null)
+        if (carro == null || !carro.ValidarDadosCarro())
         {
             return BadRequest("Dados do carro inválidos");
         }
@@ -53,12 +53,17 @@ public class CarroController : ControllerBase
         IFormFile FotoLateralDireita,
         IFormFile FotoLateralEsquerda)
     {
+        if (carro == null || !carro.ValidarDadosCarro())
+        {
+            return BadRequest("Dados de carro inválidos");
+        }
+        
         _service.Cadastrar(carro);
 
         var pastaFotos = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "carros");
         if (!Directory.Exists(pastaFotos)) Directory.CreateDirectory(pastaFotos);
 
-        // 3. Função simples para não repetir código: Salva a foto na pasta e no banco
+        // 3. Função para não repetir código: Salva a foto na pasta e no banco
         async Task SalvarEGravarFoto(IFormFile foto)
         {
             if (foto != null && foto.Length > 0)
@@ -94,15 +99,15 @@ public class CarroController : ControllerBase
         await SalvarEGravarFoto(FotoLateralDireita);
         await SalvarEGravarFoto(FotoLateralEsquerda);
 
-        return Ok("Carro e fotos cadastrados no estilo arroz com feijão!");
+        return Ok("Carro e fotos cadastrados");
     }
 
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromForm] Carro carro)
     {
-        if (id <= 0)
+        if (id <= 0 || carro == null || !carro.ValidarDadosCarro())
         {
-            return BadRequest("ID inválido");
+            return BadRequest("ID ou dados do carro inválidos");
         }
 
         try

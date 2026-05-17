@@ -66,11 +66,10 @@ public class FavoritoService : ServiceBase, IFavoritoService
                         Marca = reader.GetString("marca"),
                         Ano = reader.GetInt32("ano"),
                         Cor = reader.GetString("cor"),
-                        Preco = reader.GetDecimal("preco")
-                    };
+                        Preco = reader.GetDecimal("preco"),
 
-                    if (!reader.IsDBNull(reader.GetOrdinal("FotoFrente"))) 
-                        carro.FotoFrente = reader.GetString("FotoFrente");
+                        FotoFrente = reader.IsDBNull(reader.GetOrdinal("FotoFrente")) ? null : reader.GetString("FotoFrente")
+                    };
 
                     lista.Add(carro);
                 }

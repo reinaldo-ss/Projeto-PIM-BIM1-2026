@@ -40,13 +40,13 @@ public class CarroService : ServiceBase, ICarroService
                         Ano = reader.GetInt32("ano"),
                         Cor = reader.GetString("cor"),
                         Descricao = reader.GetString("descricao"),
-                        Preco = reader.GetDecimal("preco")
-                    };
+                        Preco = reader.GetDecimal("preco"),
 
-                    if (!reader.IsDBNull(reader.GetOrdinal("FotoFrente"))) carro.FotoFrente = reader.GetString("FotoFrente");
-                    if (!reader.IsDBNull(reader.GetOrdinal("FotoTraseira"))) carro.FotoTraseira = reader.GetString("FotoTraseira");
-                    if (!reader.IsDBNull(reader.GetOrdinal("FotoLateralDireita"))) carro.FotoLateralDireita = reader.GetString("FotoLateralDireita");
-                    if (!reader.IsDBNull(reader.GetOrdinal("FotoLateralEsquerda"))) carro.FotoLateralEsquerda = reader.GetString("FotoLateralEsquerda");
+                        FotoFrente = reader.IsDBNull(reader.GetOrdinal("FotoFrente")) ? null : reader.GetString("FotoFrente"),
+                        FotoTraseira = reader.IsDBNull(reader.GetOrdinal("FotoTraseira")) ? null : reader.GetString("FotoTraseira"),
+                        FotoLateralDireita = reader.IsDBNull(reader.GetOrdinal("FotoLateralDireita")) ? null : reader.GetString("FotoLateralDireita"),
+                        FotoLateralEsquerda = reader.IsDBNull(reader.GetOrdinal("FotoLateralEsquerda")) ? null : reader.GetString("FotoLateralEsquerda")
+                    };
                     
                     lista.Add(carro);
                 }
