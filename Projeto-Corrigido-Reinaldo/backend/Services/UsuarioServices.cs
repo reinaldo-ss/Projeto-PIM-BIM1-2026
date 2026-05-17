@@ -1,12 +1,9 @@
 using MySql.Data.MySqlClient;
 
-public class UsuarioService
+public class UsuarioService : ServiceBase
 {
-    private readonly MySqlConnectionFactory _connectionFactory;
-
-    public UsuarioService(MySqlConnectionFactory connectionFactory)
+    public UsuarioService(MySqlConnectionFactory connectionFactory) : base(connectionFactory)
     {
-        _connectionFactory = connectionFactory;
     }
 
     public List<Usuario> Listar()

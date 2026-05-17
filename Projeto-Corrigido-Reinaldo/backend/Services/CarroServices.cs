@@ -1,12 +1,9 @@
 using MySql.Data.MySqlClient;
 
-public class CarroService
+public class CarroService : ServiceBase
 {
-    private readonly MySqlConnectionFactory _connectionFactory;
-
-    public CarroService(MySqlConnectionFactory connectionFactory)
+    public CarroService(MySqlConnectionFactory connectionFactory) : base(connectionFactory)
     {
-        _connectionFactory = connectionFactory;
     }
 
     public List<Carro> Listar()

@@ -1,12 +1,9 @@
 using MySql.Data.MySqlClient;
 
-public class ImagemService
+public class ImagemService : ServiceBase
 {
-    private readonly MySqlConnectionFactory _connectionFactory;
-
-    public ImagemService(MySqlConnectionFactory connectionFactory)
+    public ImagemService(MySqlConnectionFactory connectionFactory) : base(connectionFactory)
     {
-        _connectionFactory = connectionFactory;
     }
 
     public List<Imagem> Listar()

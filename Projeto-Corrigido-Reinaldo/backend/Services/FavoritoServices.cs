@@ -1,12 +1,9 @@
 using MySql.Data.MySqlClient;
 
-public class FavoritoService
+public class FavoritoService : ServiceBase
 {
-    private readonly MySqlConnectionFactory _connectionFactory;
-
-    public FavoritoService(MySqlConnectionFactory connectionFactory)
+    public FavoritoService(MySqlConnectionFactory connectionFactory) : base(connectionFactory)
     {
-        _connectionFactory = connectionFactory;
     }
 
     public List<Favorito> Listar()
