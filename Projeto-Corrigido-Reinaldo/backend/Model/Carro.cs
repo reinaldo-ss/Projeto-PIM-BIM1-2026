@@ -40,11 +40,11 @@ public class Carro
             string.IsNullOrWhiteSpace(Marca) ||
             Ano <= 0 ||
             string.IsNullOrWhiteSpace(Cor) ||
-            string.IsNullOrWhiteSpace(Descricao) ||
-            string.IsNullOrWhiteSpace(FotoFrente) ||
-            string.IsNullOrWhiteSpace(FotoTraseira) ||
-            string.IsNullOrWhiteSpace(FotoLateralDireita) ||
-            string.IsNullOrWhiteSpace(FotoLateralEsquerda) ||
+            // string.IsNullOrWhiteSpace(Descricao) ||
+            // string.IsNullOrWhiteSpace(FotoFrente) ||
+            // string.IsNullOrWhiteSpace(FotoTraseira) ||
+            // string.IsNullOrWhiteSpace(FotoLateralDireita) ||
+            // string.IsNullOrWhiteSpace(FotoLateralEsquerda) ||
             Preco <= 0)
 
         {

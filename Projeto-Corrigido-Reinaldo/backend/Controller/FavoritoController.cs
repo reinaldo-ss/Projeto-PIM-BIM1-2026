@@ -40,7 +40,7 @@ public class FavoritoController : ControllerBase
     [HttpPost]
     public IActionResult Post([FromBody] Favorito favorito)
     {
-        Console.WriteLine($"Recebido: Usuario {favorito.Usuario_id}, Carro {favorito.Carro_id}");
+        //Console.WriteLine($"Recebido: Usuario {favorito.Usuario_id}, Carro {favorito.Carro_id}");
         if (favorito == null || !favorito.ValidarDadosFavorito())
         {
             return BadRequest("Dados do favorito inválidos");

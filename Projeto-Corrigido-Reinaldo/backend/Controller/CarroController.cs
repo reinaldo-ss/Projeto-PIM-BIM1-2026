@@ -53,6 +53,8 @@ public class CarroController : ControllerBase
         IFormFile FotoLateralDireita,
         IFormFile FotoLateralEsquerda)
     {
+        //Console.WriteLine($"Dados que chegaram: {carro.Chassi}, {carro.Modelo}, {carro.Marca}, {carro.Ano}, {carro.Cor}, {carro.Descricao}, {carro.Preco}");
+
         if (carro == null || !carro.ValidarDadosCarro())
         {
             return BadRequest("Dados de carro inválidos");

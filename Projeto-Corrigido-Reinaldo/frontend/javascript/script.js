@@ -395,10 +395,10 @@ function aplicarEstadoLogin() {
     }
 }
 
-function simularLogin() {
-    localStorage.setItem('vm_logado', 'true');
-    aplicarEstadoLogin();
-}
+// function simularLogin() {
+//     localStorage.setItem('vm_logado', 'true');
+//     aplicarEstadoLogin();
+// }
 
 function simularLogout() {
     localStorage.removeItem('vm_logado');
@@ -640,6 +640,13 @@ function fazerLogin(event) {
     .catch(erro => console.error('Erro no login:', erro));
 }
 
+function fazerLogout() {
+    localStorage.clear();
+    sessionStorage.clear();
+
+    window.location.href = 'index.html';
+}
+
 function preencherDadosConta() {
     const usuarioString = localStorage.getItem('vm_usuario');
     if (!usuarioString) return;
@@ -784,7 +791,7 @@ function _validMarca(v) {
 function _validModelo(v) {
     v = v.trim();
     if (!v) return 'Modelo é obrigatório';
-    if (v.length < 10) return 'Mínimo 10 caracteres';
+    //if (v.length < 10) return 'Mínimo 10 caracteres';
     if (v.length > 100) return 'Máximo 100 caracteres';
     return '';
 }
