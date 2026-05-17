@@ -1,6 +1,6 @@
 using MySql.Data.MySqlClient;
 
-public class ImagemService : ServiceBase
+public class ImagemService : ServiceBase, IImagemService
 {
     public ImagemService(MySqlConnectionFactory connectionFactory) : base(connectionFactory)
     {

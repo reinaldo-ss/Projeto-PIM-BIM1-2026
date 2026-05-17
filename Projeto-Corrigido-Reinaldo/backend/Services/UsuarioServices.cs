@@ -1,6 +1,6 @@
 using MySql.Data.MySqlClient;
 
-public class UsuarioService : ServiceBase
+public class UsuarioService : ServiceBase, IUsuarioService
 {
     public UsuarioService(MySqlConnectionFactory connectionFactory) : base(connectionFactory)
     {

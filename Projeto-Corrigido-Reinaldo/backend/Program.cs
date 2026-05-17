@@ -8,10 +8,10 @@ builder.Services.AddScoped<MySqlConnectionFactory>();
 
 builder.Services.AddControllers();
 
-builder.Services.AddScoped<CarroService>();
-builder.Services.AddScoped<UsuarioService>();
-builder.Services.AddScoped<ImagemService>();
-builder.Services.AddScoped<FavoritoService>();
+builder.Services.AddScoped<ICarroService, CarroService>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IImagemService, ImagemService>();
+builder.Services.AddScoped<IFavoritoService, FavoritoService>();
 
 builder.Services.AddCors(options =>
 {

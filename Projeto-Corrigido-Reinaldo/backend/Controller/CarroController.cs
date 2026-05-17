@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 [Route("api/[controller]")]
 public class CarroController : ControllerBase
 {
-    private readonly CarroService _service;
-    private readonly ImagemService _imagemService;
+    private readonly ICarroService _service;
+    private readonly IImagemService _imagemService;
 
-    public CarroController(CarroService service, ImagemService ImagemService)
+    public CarroController(ICarroService service, IImagemService ImagemService)
     {
         _service = service;
         _imagemService = ImagemService;

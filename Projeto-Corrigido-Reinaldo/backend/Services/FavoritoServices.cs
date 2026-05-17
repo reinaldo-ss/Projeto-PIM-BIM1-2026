@@ -1,6 +1,6 @@
 using MySql.Data.MySqlClient;
 
-public class FavoritoService : ServiceBase
+public class FavoritoService : ServiceBase, IFavoritoService
 {
     public FavoritoService(MySqlConnectionFactory connectionFactory) : base(connectionFactory)
     {

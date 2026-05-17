@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 [Route("api/[controller]")]
 public class FavoritoController : ControllerBase
 {
-    private readonly FavoritoService _service;
+    private readonly IFavoritoService _service;
 
-    public FavoritoController(FavoritoService service)
+    public FavoritoController(IFavoritoService service)
     {
         _service = service;
     }

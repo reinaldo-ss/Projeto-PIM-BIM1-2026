@@ -1,6 +1,6 @@
 using MySql.Data.MySqlClient;
 
-public class CarroService : ServiceBase
+public class CarroService : ServiceBase, ICarroService
 {
     public CarroService(MySqlConnectionFactory connectionFactory) : base(connectionFactory)
     {
