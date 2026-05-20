@@ -56,6 +56,54 @@ public class CarroService : ServiceBase, ICarroService
         return lista;
     }
 
+    public List<Carro> BuscarPorNome(string termo)
+    {
+        var lista = new List<Carro>();
+
+        using var conexao = _connectionFactory.CreateConnection();
+        conexao.Open();
+
+        var query = @"SELECT c.id, c.chassi, c.modelo, c.marca, c.ano, c.cor, c.descricao, c.preco,
+                          i1.caminho_imagem AS FotoFrente,
+                          i2.caminho_imagem AS FotoTraseira,
+                          i3.caminho_imagem AS FotoLateralDireita, 
+                          i4.caminho_imagem AS FotoLateralEsquerda
+                          FROM Carro c
+                          LEFT JOIN Imagem i1 ON c.chassi = i1.chassi AND i1.tipo_imagem = 'FotoFrente'
+                          LEFT JOIN Imagem i2 ON c.chassi = i2.chassi AND i2.tipo_imagem = 'FotoTraseira'
+                          LEFT JOIN Imagem i3 ON c.chassi = i3.chassi AND i3.tipo_imagem = 'FotoLateralDireita'
+                          LEFT JOIN Imagem i4 ON c.chassi = i4.chassi AND i4.tipo_imagem = 'FotoLateralEsquerda'
+                          WHERE CONCAT(c.modelo, ' ', c.marca) LIKE @termo";
+        using var comando = new MySqlCommand(query, conexao);
+
+        comando.Parameters.AddWithValue("@termo", $"%{termo}%");
+
+        using var reader = comando.ExecuteReader();
+        while (reader.Read())
+        {
+            var carro = new Carro
+            {
+                Id = reader.GetInt32("id"),
+                Chassi = reader.GetString("chassi"),
+                Modelo = reader.GetString("modelo"),
+                Marca = reader.GetString("marca"),
+                Ano = reader.GetInt32("ano"),
+                Cor = reader.GetString("cor"),
+                Descricao = reader.GetString("descricao"),
+                Preco = reader.GetDecimal("preco"),
+
+                FotoFrente = reader.IsDBNull(reader.GetOrdinal("FotoFrente")) ? null : reader.GetString("FotoFrente"),
+                FotoTraseira = reader.IsDBNull(reader.GetOrdinal("FotoTraseira")) ? null : reader.GetString("FotoTraseira"),
+                FotoLateralDireita = reader.IsDBNull(reader.GetOrdinal("FotoLateralDireita")) ? null : reader.GetString("FotoLateralDireita"),
+                FotoLateralEsquerda = reader.IsDBNull(reader.GetOrdinal("FotoLateralEsquerda")) ? null : reader.GetString("FotoLateralEsquerda")
+            };
+
+            lista.Add(carro);    
+        }
+
+        return lista;
+    }
+
     public void Cadastrar(Carro carro)
     {
         using (var conn = _connectionFactory.CreateConnection())

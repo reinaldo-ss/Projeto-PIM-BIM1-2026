@@ -1,48 +1,81 @@
-async function listarCarros() {
+function desenharCardsDeCarros(carros) {
     const container = document.querySelector('.catalogo');
     if (!container) return;
 
+    container.innerHTML = ''; // Limpa tela
+
+    if (carros.length === 0) {
+        container.innerHTML = '<p style="text-align:center; width:100%;">Nenhum veículo encontrado com esse nome.</p>';
+        const subtitulo = document.querySelector('.subtitulo-mostruario');
+        if (subtitulo) subtitulo.textContent = '0 veículos encontrados';
+        return;
+    }
+
+    carros.forEach(carro => {
+        let caminhoBanco = carro.fotoFrente || carro.FotoFrente;
+        let urlFinalFoto = caminhoBanco ? `http://localhost:5147${caminhoBanco}` : `https://placehold.co/400x250?text=${carro.modelo || carro.Modelo}`;
+
+        container.innerHTML += `
+            <div class="card-carro" onclick="verDetalhes('${carro.chassi || carro.Chassi}')">
+                <div class="card-img">
+                    <span class="card-ano">${carro.ano || carro.Ano}</span>
+                    <span class="card-favorito" title="Favoritar" onclick="toggleFavorito(event, this, '${carro.id || carro.Id}')">☆</span>
+                    <img src="${urlFinalFoto}" alt="${carro.modelo || carro.Modelo}" />
+                </div>
+                <div class="card-info">
+                    <h3>${carro.marca || carro.Marca} ${carro.modelo || carro.Modelo}</h3>
+                    <p>${carro.cor || carro.Cor}</p>
+                    <p>R$ ${Number(carro.preco || carro.Preco).toLocaleString('pt-BR')}</p>
+                    <p>📍 São Paulo - SP</p>
+                </div>
+            </div>
+        `;
+    });
+    
+    const subtitulo = document.querySelector('.subtitulo-mostruario');
+    if (subtitulo) subtitulo.textContent = `${carros.length} veículos encontrados`;
+}
+
+async function listarCarros() {
     try {
         const response = await fetch('http://localhost:5147/api/carro');
         const carros = await response.json();
-
-        container.innerHTML = '';
-
-        carros.forEach(carro => {
-            // 1. Resolvemos o caminho da imagem (Back-end vs Front-end)
-            let caminhoBanco = carro.fotoFrente || carro.FotoFrente;
-            let urlFinalFoto;
-
-            if (caminhoBanco) {
-                urlFinalFoto = `http://localhost:5147${caminhoBanco}`;
-            } else {
-                urlFinalFoto = `https://placehold.co/400x250?text=${carro.modelo || carro.Modelo}`;
-            }
-
-            // 2. Montamos o HTML usando a urlFinalFoto
-            container.innerHTML += `
-                <div class="card-carro" onclick="verDetalhes('${carro.chassi || carro.Chassi}')">
-                    <div class="card-img">
-                        <span class="card-ano">${carro.ano || carro.Ano}</span>
-                        <span class="card-favorito" title="Favoritar" onclick="toggleFavorito(event, this, '${carro.id}')">☆</span>
-                        <img src="${urlFinalFoto}" alt="${carro.modelo || carro.Modelo}" />
-                    </div>
-                    <div class="card-info">
-                        <h3>${carro.marca || carro.Marca} ${carro.modelo || carro.Modelo}</h3>
-                        <p>${carro.cor || carro.Cor}</p>
-                        <p>R$ ${Number(carro.preco || carro.Preco).toLocaleString('pt-BR')}</p>
-                        <p>📍 São Paulo - SP</p>
-                    </div>
-                </div>
-            `;
-        });
-        
-        const subtitulo = document.querySelector('.subtitulo-mostruario');
-        if (subtitulo) subtitulo.textContent = `${carros.length} veículos encontrados`;
-
+        desenharCardsDeCarros(carros); // Manda desenhar
     } catch (erro) {
         console.error("Erro ao carregar carros:", erro);
-        container.innerHTML = '<p>Erro ao carregar o catálogo de veículos.</p>';
+        const container = document.querySelector('.catalogo');
+        if (container) container.innerHTML = '<p>Erro ao carregar o catálogo de veículos.</p>';
+    }
+}
+
+function checarEnter(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); // pra n recarregar a página
+        realizarPesquisa();
+    }
+}
+
+async function realizarPesquisa() {
+    const termo = document.getElementById('input-pesquisa').value.trim();
+    if (!termo) {
+        listarCarros();
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:5147/api/carro/buscar/${termo}`);
+        
+        if (!response.ok) {
+            // se 404, mandamos uma resposta vazia
+            desenharCardsDeCarros([]); 
+            return;
+        }
+
+        const carrosEncontrados = await response.json();
+        desenharCardsDeCarros(carrosEncontrados); // Manda desenhar só os encontrados
+        
+    } catch (erro) {
+        console.error("Erro na pesquisa:", erro);
     }
 }
 
@@ -103,10 +136,9 @@ async function listarFavoritos() {
     }
 }
 
-function enviarCarro(event) {
-    event.preventDefault();
+function enviarCarro(form) {
     if (!validarFormCadCarro()) return;
-    const form = event.target;
+
     const formData = new FormData(form);
     const idEdicao = localStorage.getItem('vm_carro_edicao');
     const url = idEdicao ? `http://localhost:5147/api/carro/${idEdicao}` : 'http://localhost:5147/api/Carro';
@@ -121,6 +153,7 @@ function enviarCarro(event) {
         if (response.ok) {
             alert(idEdicao ? 'Veículo atualizado com sucesso!' : 'Veículo cadastrado com sucesso!');
             localStorage.removeItem('vm_carro_edicao');
+            
             carregarPagina('admin');
         } else {
             alert('Erro ao cadastrar o veículo. Verifique se preencheu todos os campos.');
@@ -504,6 +537,12 @@ document.addEventListener('click', (e) => {
 });
 
 document.addEventListener('submit', function(e) {
+    // Verifica se é o formulário de cadastrar carro
+     if (e.target.id === 'formCadastrarCarro') {
+        e.preventDefault();
+        enviarCarro(e.target);
+        return;
+    }
     //console.log("Evento submit detectado no formulário:", e.target.id)
     // Verifica se é o formulário de cadastrar cliente
     if (e.target.id === 'formCadastrarCliente') {
@@ -1052,6 +1091,19 @@ document.addEventListener('input', function(e) {
         if (limpo !== e.target.value) e.target.value = limpo;
     }
 });
+
+window.addEventListener('unload', function() {
+    const usuarioString = localStorage.getItem('vm_usuario');
+
+    if (usuarioString) {
+        const usuario = JSON.parse(usuarioString);
+
+        if (usuario.email === 'administrador@gmail.com' || usuario.Email === 'administrador@gmail.com') {
+            localStorage.removeItem('vm_logado');
+            localStorage.removeItem('vm_usuario');    
+        }
+    }
+})
 
 aplicarEstadoLogin();
 carregarPagina('carros');

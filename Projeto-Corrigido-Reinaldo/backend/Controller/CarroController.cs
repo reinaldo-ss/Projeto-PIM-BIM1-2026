@@ -28,6 +28,24 @@ public class CarroController : ControllerBase
         return Ok(carros);
     }
 
+    [HttpGet("buscar/{termo}")]
+    public IActionResult Get(string termo)
+    {
+        if (string.IsNullOrWhiteSpace(termo))
+        {
+            return BadRequest("O termo de pesquisa não pode ser vazio");
+        }
+
+        var carros = _service.BuscarPorNome(termo);
+
+        if (carros == null || carros.Count == 0)
+        {
+            return NotFound("Nenhum carro encontrado com o seguinte termo: " + termo);
+        }
+
+        return Ok(carros);
+    }
+
     // Endpoint para cadastrar os dados de um carro
 
     [HttpPost]
