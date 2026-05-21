@@ -55,27 +55,43 @@ function checarEnter(event) {
     }
 }
 
+// Função criada para pesquisar carros tanto na tela de admin quanto na vitrine
 async function realizarPesquisa() {
-    const termo = document.getElementById('input-pesquisa').value.trim();
+    console.log("Iniciando Pesquisa");
+
+    const inputElement = document.getElementById('input-buscar-carro');
+    console.log("JavaScript não encontrou o input de busca");
+    if (!inputElement) return;
+
+    const termo = inputElement.value.trim();
+    const NaTelaDoAdm = document.getElementById('corpo-tabela-admin') !== null;
+    console.log("estamos na tela do administrador: ", NaTelaDoAdm);
+
     if (!termo) {
-        listarCarros();
+        console.log("A barra não possui nenhum nome");
+        if (NaTelaDoAdm) carregarTabelaAdmin();
+        else listarCarros();
         return;
     }
 
     try {
+        // C# faz o trabalho para as duas telas com a mesma rota
         const response = await fetch(`http://localhost:5147/api/carro/buscar/${termo}`);
         
-        if (!response.ok) {
-            // se 404, mandamos uma resposta vazia
-            desenharCardsDeCarros([]); 
-            return;
+        let carrosEncontrados = [];
+        if (response.ok) {
+            carrosEncontrados = await response.json();
         }
 
-        const carrosEncontrados = await response.json();
-        desenharCardsDeCarros(carrosEncontrados); // Manda desenhar só os encontrados
+        // Bifurcação: Aqui ele manda os dados pra função certa dependendo da tela
+        if (NaTelaDoAdm) {
+            desenharLinhasTabelaAdmin(carrosEncontrados);
+        } else {
+            desenharCardsDeCarros(carrosEncontrados);
+        }
         
-    } catch (erro) {
-        console.error("Erro na pesquisa:", erro);
+    } catch (error) {
+        console.error("Erro na pesquisa:", error);
     }
 }
 
@@ -137,7 +153,13 @@ async function listarFavoritos() {
 }
 
 function enviarCarro(form) {
-    if (!validarFormCadCarro()) return;
+    console.log("Passo2: função de enviarCarro chamada");
+    if (!validarFormCadCarro()) {
+        console.log("Formulário inválido e não enviado");
+        return;
+    }
+
+    console.log("Passo3:Formulário validado e enviado");
 
     const formData = new FormData(form);
     const idEdicao = localStorage.getItem('vm_carro_edicao');
@@ -256,43 +278,45 @@ function carregarPagina(pagina) {
         });
 }
 
-async function carregarTabelaAdmin() {
+async function desenharLinhasTabelaAdmin(carros) {
     const tabela = document.getElementById('corpo-tabela-admin');
     if (!tabela) return;
 
+    tabela.innerHTML = ''; // Limpa a tabela
+
+    if (carros.length === 0) {
+        tabela.innerHTML = '<tr><td colspan="8" style="text-align:center;">Nenhum carro encontrado na pesquisa.</td></tr>'
+        return;
+    }
+
+    carros.forEach(carro => {
+        const idCarro = carro.id || carro.Id;
+        const precoSeguro = Number(carro.preco || carro.Preco || 0);
+
+        tabela.innerHTML += `
+            <tr>
+                <td><img src="https://placehold.co/80x50?text=Carro" class="tabela-img"></td>
+                <td>${carro.modelo || carro.Modelo}</td>
+                <td>R$ ${precoSeguro.toLocaleString('pt-BR')}</td>
+                <td>${carro.ano || carro.Ano}</td>
+                <td>${carro.cor || carro.Cor}</td>
+                <td>${carro.chassi || carro.Chassi}</td>
+                <td>${carro.marca || carro.Marca}</td>
+                <td class="col-acoes">
+                    <button class="btn-alterar" onclick="prepararEdicaoCarro(${idCarro})">Alterar</button>
+                    <button class="btn-deletar" onclick="deletarCarro(${idCarro})">Deletar</button>
+                </td>
+            </tr>`;
+    })
+}
+async function carregarTabelaAdmin() {
     try {
         const res = await fetch('http://localhost:5147/api/carro');
         const carros = await res.json();
 
-        tabela.innerHTML = ''; // Limpa a tabela
-        
-        if (carros.length === 0) {
-            tabela.innerHTML = '<tr><td colspan="8" style="text-align:center;">Nenhum carro cadastrado no banco de dados.</td></tr>';
-            return;
-        }
-
-        carros.forEach(carro => {
-            const idCarro = carro.id || carro.Id; 
-            
-            const precoSeguro = Number(carro.preco || carro.Preco || 0);
-
-            tabela.innerHTML += `
-                <tr>
-                    <td><img src="https://placehold.co/80x50?text=Carro" class="tabela-img"></td>
-                    <td>${carro.modelo || carro.Modelo}</td>
-                    <td>R$ ${precoSeguro.toLocaleString('pt-BR')}</td>
-                    <td>${carro.ano || carro.Ano}</td>
-                    <td>${carro.cor || carro.Cor}</td>
-                    <td>${carro.chassi || carro.Chassi}</td>
-                    <td>${carro.marca || carro.Marca}</td>
-                    <td class="col-acoes">
-                        <button class="btn-alterar" onclick="prepararEdicaoCarro(${idCarro})">Alterar</button>
-                        <button class="btn-deletar" onclick="deletarCarro(${idCarro})">Deletar</button>
-                    </td>
-                </tr>`;
-        });
-    } catch (err) { 
-        console.error("Erro na tabela admin:", err); 
+        desenharLinhasTabelaAdmin(carros);
+    }  catch (error) {
+        console.error("Erro ao carregar tabela do admin: ", error);
     }
 }
 
@@ -540,6 +564,7 @@ document.addEventListener('submit', function(e) {
     // Verifica se é o formulário de cadastrar carro
      if (e.target.id === 'formCadastrarCarro') {
         e.preventDefault();
+        console.log("Passo 1: F5 da página bloqueado");
         enviarCarro(e.target);
         return;
     }

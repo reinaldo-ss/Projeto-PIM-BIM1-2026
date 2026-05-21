@@ -51,10 +51,10 @@
                 <button class="btn-novo-carro" onclick="novoCarro()">+ Novo carro</button>
 
                 <div class="admin-buscar">
-                    <input type="text" id="input-buscar-carro" placeholder="Buscar carro...">
+                    <input type="text" id="input-buscar-carro" placeholder="Buscar carro..." onkeydown="checarEnter(event)">
                 </div>
 
-                <button class="btn-filtros">Filtros</button>
+                <button class="btn-filtros" onclick="realizarPesquisa()">Pesquisar</button>
                 <button class="btn-relatorio" onclick="gerarRelatorio()">Gerar relatório</button>
             </div>
 
