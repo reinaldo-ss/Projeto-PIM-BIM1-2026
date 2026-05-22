@@ -55,26 +55,50 @@ function checarEnter(event) {
     }
 }
 
-// Função criada para pesquisar carros tanto na tela de admin quanto na vitrine
+// Função criada para pesquisar carros tanto na tela de admin, na tela de favoritos e na vitrine
 async function realizarPesquisa() {
     console.log("Iniciando Pesquisa");
 
-    const inputElement = document.getElementById('input-buscar-carro');
-    console.log("JavaScript não encontrou o input de busca");
-    if (!inputElement) return;
+    const inputElement = document.getElementById('input-buscar-carro') || document.getElementById('input-pesquisa');
+    //console.log("JavaScript não encontrou o input de busca");
+    if (!inputElement) {
+        console.log("Erro: O Javascript não encontrou o input de busca.");
+        return;
+    };
 
-    const termo = inputElement.value.trim();
+    const termo = inputElement.value.trim().toLowerCase();
     const NaTelaDoAdm = document.getElementById('corpo-tabela-admin') !== null;
-    console.log("estamos na tela do administrador: ", NaTelaDoAdm);
+    const NaTelaDosFavoritos = document.getElementById('titulo-pagina-favoritos') !== null;
+    //console.log("estamos na tela do administrador: ", NaTelaDoAdm);
 
     if (!termo) {
-        console.log("A barra não possui nenhum nome");
+        //console.log("A barra não possui nenhum nome");
         if (NaTelaDoAdm) carregarTabelaAdmin();
+        else if (NaTelaDosFavoritos) listarFavoritos();
         else listarCarros();
         return;
     }
 
     try {
+
+        if (NaTelaDosFavoritos) {
+            const usuarioLogado = JSON.parse(localStorage.getItem('vm_usuario'));
+            if (!usuarioLogado) return;
+            
+            const usuarioId = usuarioLogado.id || usuarioLogado.Id;
+            
+            const response = await fetch(`http://localhost:5147/api/favorito/usuario/${usuarioId}`);
+            const carrosFavoritos = await response.json();
+            
+            const filtrados = carrosFavoritos.filter(carro => 
+                (carro.marca || carro.Marca).toLowerCase().includes(termo) || 
+                (carro.modelo || carro.Modelo).toLowerCase().includes(termo)
+            );
+            
+            // Manda desenhar os cards só com os filtrados!
+            desenharCardsDeCarros(filtrados);
+            return;
+        }
         // C# faz o trabalho para as duas telas com a mesma rota
         const response = await fetch(`http://localhost:5147/api/carro/buscar/${termo}`);
         
@@ -276,6 +300,42 @@ function carregarPagina(pagina) {
                 preencherFormularioEdicaoConta();
             }
         });
+}
+
+function desenharLinhasTabelaFavoritos(carros) {
+    const tabela = document.getElementById('corpo-tabela-favoritos');
+    if (!tabela) return;
+
+    tabela.innerHTML = ''; // Limpa a tabela
+
+    if (carros.length === 0) {
+        tabela.innerHTML = '<tr><td colspan="8" style="text-align:center;">Nenhum carro encontrado na pesquisa.</td></tr>'
+        return;
+    }
+
+    carros.forEach(carro => {
+        const idCarro = carro.id || carro.Id;
+        const chassi = carro.chassi || carro.Chassi;
+        const precoSeguro = Number(carro.preco || carro.Preco || 0);
+
+        let caminhoBanco = carro.fotoFrente || carro.FotoFrente;
+        let urlFinalFoto = caminhoBanco ? `http://localhost:5147${caminhoBanco}` : `https://placehold.co/80x50?text=Carro`;
+
+        tabela.innerHTML += `
+            <tr>
+                <td><img src="${urlFinalFoto}" class="tabela-img" style="width: 80px; height: 50px; object-fit: cover; border-radius: 4px;"></td>
+                <td>${carro.modelo || carro.Modelo}</td>
+                <td>R$ ${precoSeguro.toLocaleString('pt-BR')}</td>
+                <td>${carro.ano || carro.Ano}</td>
+                <td>${carro.cor || carro.Cor}</td>
+                <td>${carro.chassi || carro.Chassi}</td>
+                <td>${carro.marca || carro.Marca}</td>
+                <td class="col-acoes">
+                    <button class="btn-alterar" onclick="verDetalhes('${chassi}')">Detalhes</button>
+                    <button class="btn-deletar favoritado" onclick="toggleFavorito(event, this, '${idCarro}'); setTimeout(listarFavoritos, 300)">Remover</button>
+                </td>
+            </tr>`;
+    })
 }
 
 async function desenharLinhasTabelaAdmin(carros) {

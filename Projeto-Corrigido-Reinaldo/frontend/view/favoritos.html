@@ -15,21 +15,20 @@
     <section class="section-pesquisa">
         <div class="content-section pesquisa">
             <div class="barra_de_pesquisa">
-                <input type="text" id="input-pesquisa" placeholder="Buscar nos seus favoritos...">
+                <input type="text" id="input-buscar-carro" placeholder="Buscar nos seus favoritos..." onkeydown="checarEnter(event)">
             </div>
-            <button id="filtro_pesquisa">Filtros</button>
+            <button id="filtro_pesquisa" onclick="realizarPesquisa()">Pesquisar</button>
         </div>
     </section>
 
     <section>
         <div class="texto-mostruario content-section">
-            <p class="titulo-mostruario">★ Meus Favoritos</p>
+            <p class="titulo-mostruario" id="titulo-pagina-favoritos">★ Meus Favoritos</p>
             <p class="subtitulo-mostruario">4 veículos salvos</p>
 
-            <!-- Cards dos carros favoritados -->
-            <section class="catalogo">
-                // Inseridos dinamicamente via JavaScript (listarFavoritos)
-            </section>
+            <div class="catalogo">
+                
+            </div>
         </div>
     </section>
 </body>
