@@ -951,6 +951,13 @@ function _validChassi(v) {
     return '';
 }
 
+function _validDescricao(v) {
+    v = v.trim();
+    if (!v) return 'Descrição é obrigatória';
+    if (v.length < 10) return 'Mínimo 10 caracteres';
+    return '';
+}
+
 function _validFotoCarro(id) {
     if (localStorage.getItem('vm_carro_edicao')) return '';
     const input = document.getElementById(id);
@@ -979,6 +986,7 @@ function validarFormCadCarro() {
         { id: 'cor',    fn: _validCor },
         { id: 'preco',  fn: _validPreco },
         { id: 'chassi', fn: _validChassi },
+        { id: 'descricao', fn: _validDescricao },
     ];
     let valido = true;
     campos.forEach(({ id, fn }) => {
@@ -1005,6 +1013,7 @@ document.addEventListener('focusout', function(e) {
         cor:    _validCor,
         preco:  _validPreco,
         chassi: _validChassi,
+        descricao: _validDescricao,
     };
     const id = e.target?.id;
     if (mapa[id]) _mostrarErroCadCar(id, mapa[id](e.target.value));
