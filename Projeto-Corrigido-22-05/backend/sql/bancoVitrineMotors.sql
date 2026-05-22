@@ -19,9 +19,9 @@ CREATE TABLE IF NOT EXISTS Usuario (
   cpf      VARCHAR(14)  NOT NULL,
   email    VARCHAR(255) NOT NULL UNIQUE,
   senha    VARCHAR(255) NOT NULL,
-  telefone VARCHAR(20),
-  estado   VARCHAR(50),
-  cidade   VARCHAR(100)
+  telefone VARCHAR(20) NOT NULL,
+  estado   VARCHAR(50) NOT NULL,
+  cidade   VARCHAR(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ============================================================
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS Carro (
   marca     VARCHAR(100)   NOT NULL,
   ano       INT            NOT NULL,
   cor       VARCHAR(50)    NOT NULL,
-  descricao TEXT,
+  descricao TEXT NOT NULL,
   preco     DECIMAL(10, 2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -76,10 +76,10 @@ CREATE INDEX idx_favorito_carro   ON Favorito(carro_id);
 
 -- INSERTS PARA USAR DE TESTE
 INSERT IGNORE INTO usuario (nome, email, senha, cpf, telefone, estado, cidade) VALUES
-('Fernanda Rocha', 'fernanda@email.com', '789012', '12345678900', '31999991234', 'MG', 'Belo Horizonte');
+('Fernanda Rocha', 'fernanda@email.com', '78901212', '12345678900', '31999991234', 'MG', 'Belo Horizonte');
 
 INSERT IGNORE INTO usuario (nome, email, senha, cpf, telefone, estado, cidade) VALUES
 ('Rodrigo Alves', 'rodrigo@email.com', 'password', '98765432100', '41988884321', 'PR', 'Curitiba');
 
 INSERT IGNORE INTO usuario (nome, email, senha, cpf, telefone, estado, cidade) VALUES
-('Juliana Mendes', 'juliana@email.com', 'abc123', '45678912399', '51977778765', 'RS', 'Porto Alegre'); 
+('Juliana Mendes', 'juliana@email.com', 'abc12345', '45678912399', '51977778765', 'RS', 'Porto Alegre'); 
