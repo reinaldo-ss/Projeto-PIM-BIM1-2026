@@ -73,3 +73,13 @@ CREATE TABLE IF NOT EXISTS Favorito (
 -- Índices para agilizar buscas por usuário e por carro
 CREATE INDEX idx_favorito_usuario ON Favorito(usuario_id);
 CREATE INDEX idx_favorito_carro   ON Favorito(carro_id);
+
+-- INSERTS PARA USAR DE TESTE
+INSERT IGNORE INTO usuario (nome, email, senha, cpf, telefone, estado, cidade) VALUES
+('Fernanda Rocha', 'fernanda@email.com', '789012', '12345678900', '31999991234', 'MG', 'Belo Horizonte');
+
+INSERT IGNORE INTO usuario (nome, email, senha, cpf, telefone, estado, cidade) VALUES
+('Rodrigo Alves', 'rodrigo@email.com', 'password', '98765432100', '41988884321', 'PR', 'Curitiba');
+
+INSERT IGNORE INTO usuario (nome, email, senha, cpf, telefone, estado, cidade) VALUES
+('Juliana Mendes', 'juliana@email.com', 'abc123', '45678912399', '51977778765', 'RS', 'Porto Alegre'); 
