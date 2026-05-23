@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitrine Motors - Cadastrar Carro</title>
+
+    <!--Importações-->
+    <script src="../javascript/script.js"></script>
+    <link rel="stylesheet" href="../css/styleCadCarro.css">
+    <link rel="stylesheet" href="../css/styleGlobal.css">
+
+</head>
+<body>
+    <section>
+        <div class="content-section section-cadastro-cad-car">
+            <div class="tela-geral-cad-car">
+                <div class="info-lateral-cad-car cor_fundo">
+                    <a id="sair-cad-car" onclick="carregarPagina('admin')"> < </a>
+
+                    <div id="texto-central-cad-car">
+                        <img class="logo2" src="./img/logo-vm-branco.png" alt="Logo do Vitrine Motors">
+                            <div>
+                                <p id="titulo-logo-cad-car">VitrineMotors</p>
+                                <p>Cadastre o seu carro</p>
+                            </div>
+                    </div>
+                </div>
+
+                <div class="cadastro-dados cadastro-dados-carro-cad-car">
+                    <p id="titulo-cadastro-cad-car">Formulário Cadastrar Carro</p>
+
+                    <form id='formCadastrarCarro'>
+                        <div class="linha-divisoria-cad-car"></div>
+
+                        <p class="secao-subtitulo-cad-car">Informações do veículo</p>
+
+                        <div class="linha-dupla-inputs-cad-car">
+                            <div class="inputs-gerais-cad-car">
+                                <label for="marca">Marca</label>
+                                <div class="grupo-input-cad-car">
+                                    <svg class="icone-input" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><circle cx="7" cy="7" r="1.5"/></svg>
+                                    <input type="text" id="marca" name="marca" placeholder="Ex: Honda, BMW..." maxlength="100" />
+                                </div>
+                                <span class="msg-erro-cad-car" id="erro-marca"></span>
+                            </div>
+                            <div class="inputs-gerais-cad-car">
+                                <label for="modelo">Modelo</label>
+                                <div class="grupo-input-cad-car">
+                                    <svg class="icone-input" viewBox="0 0 24 24"><path d="M3 13l2-5a2 2 0 012-1h10a2 2 0 012 1l2 5"/><path d="M3 13h18v5a1 1 0 01-1 1h-2a1 1 0 01-1-1v-1H7v1a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><circle cx="7.5" cy="16.5" r="1"/><circle cx="16.5" cy="16.5" r="1"/></svg>
+                                    <input type="text" id="modelo" name="modelo" placeholder="Ex: Civic, Corolla..." maxlength="100" />
+                                </div>
+                                <span class="msg-erro-cad-car" id="erro-modelo"></span>
+                            </div>
+                        </div>
+
+                        <div class="linha-tripla-inputs-cad-car">
+                            <div class="inputs-gerais-cad-car">
+                                <label for="ano">Ano</label>
+                                <div class="grupo-input-cad-car">
+                                    <svg class="icone-input" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                    <input type="number" id="ano" name="ano" placeholder="2024" min="1000" />
+                                </div>
+                                <span class="msg-erro-cad-car" id="erro-ano"></span>
+                            </div>
+                            <div class="inputs-gerais-cad-car">
+                                <label for="cor">Cor</label>
+                                <div class="grupo-input-cad-car">
+                                    <svg class="icone-input" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>
+                                    <input type="text" id="cor" name="cor" placeholder="Ex: Preto" maxlength="50" />
+                                </div>
+                                <span class="msg-erro-cad-car" id="erro-cor"></span>
+                            </div>
+                            <div class="inputs-gerais-cad-car">
+                                <label for="preco">Preço (R$)</label>
+                                <div class="grupo-input-cad-car">
+                                    <svg class="icone-input" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+                                    <input type="number" step="0.01" id="preco" name="preco" placeholder="0,00" />
+                                </div>
+                                <span class="msg-erro-cad-car" id="erro-preco"></span>
+                            </div>
+                        </div>
+
+                        <div class="inputs-gerais-cad-car">
+                            <label for="chassi">Chassi</label>
+                            <div class="grupo-input-cad-car">
+                                <svg class="icone-input" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="13" y2="13"/></svg>
+                                <input type="text" id="chassi" name="chassi" placeholder="17 caracteres" maxlength="17" />
+                            </div>
+                            <span class="msg-erro-cad-car" id="erro-chassi"></span>
+                        </div>
+
+                        <div class="inputs-gerais-cad-car">
+                            <label for="descricao">Descrição</label>
+                            <div class="grupo-input-cad-car">
+                                <svg class="icone-input" viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="14" y2="18"/></svg>
+                                <textarea id="descricao" name="descricao" rows="3" placeholder="Descreva o veículo: estado de conservação, revisões, acessórios..."></textarea>
+                            </div>
+                            <span class="msg-erro-cad-car" id="erro-descricao"></span>
+                        </div>
+
+                        <div class="linha-divisoria-cad-car"></div>
+
+                        <p class="secao-subtitulo-cad-car">Fotos do veículo</p>
+
+                        <div class="linha-dupla-inputs-cad-car">
+                            <div class="inputs-gerais-cad-car">
+                                <label for="fotoFrente">Frente</label>
+                                <label class="upload-foto-cad-car" for="fotoFrente">
+                                    <img class="preview-foto-cad-car" id="preview-fotoFrente" src="" alt="Preview">
+                                    <div class="upload-placeholder-cad-car">
+                                        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><polyline points="21 17 16 12 5 19"/></svg>
+                                        <span>Clique para<br>adicionar foto</span>
+                                    </div>
+                                </label>
+                                <input type="file" id="fotoFrente" name="FotoFrente" accept=".jpg,.jpeg,.png" hidden />
+                                <span class="msg-erro-cad-car" id="erro-fotoFrente"></span>
+                            </div>
+                            <div class="inputs-gerais-cad-car">
+                                <label for="fotoTraseira">Traseira</label>
+                                <label class="upload-foto-cad-car" for="fotoTraseira">
+                                    <img class="preview-foto-cad-car" id="preview-fotoTraseira" src="" alt="Preview">
+                                    <div class="upload-placeholder-cad-car">
+                                        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><polyline points="21 17 16 12 5 19"/></svg>
+                                        <span>Clique para<br>adicionar foto</span>
+                                    </div>
+                                </label>
+                                <input type="file" id="fotoTraseira" name="FotoTraseira" accept=".jpg,.jpeg,.png" hidden />
+                                <span class="msg-erro-cad-car" id="erro-fotoTraseira"></span>
+                            </div>
+                        </div>
+
+                        <div class="linha-dupla-inputs-cad-car">
+                            <div class="inputs-gerais-cad-car">
+                                <label for="fotoLatDir">Lateral direita</label>
+                                <label class="upload-foto-cad-car" for="fotoLatDir">
+                                    <img class="preview-foto-cad-car" id="preview-fotoLatDir" src="" alt="Preview">
+                                    <div class="upload-placeholder-cad-car">
+                                        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><polyline points="21 17 16 12 5 19"/></svg>
+                                        <span>Clique para<br>adicionar foto</span>
+                                    </div>
+                                </label>
+                                <input type="file" id="fotoLatDir" name="FotoLateralDireita" accept=".jpg,.jpeg,.png" hidden />
+                                <span class="msg-erro-cad-car" id="erro-fotoLatDir"></span>
+                            </div>
+                            <div class="inputs-gerais-cad-car">
+                                <label for="fotoLatEsq">Lateral esquerda</label>
+                                <label class="upload-foto-cad-car" for="fotoLatEsq">
+                                    <img class="preview-foto-cad-car" id="preview-fotoLatEsq" src="" alt="Preview">
+                                    <div class="upload-placeholder-cad-car">
+                                        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><polyline points="21 17 16 12 5 19"/></svg>
+                                        <span>Clique para<br>adicionar foto</span>
+                                    </div>
+                                </label>
+                                <input type="file" id="fotoLatEsq" name="FotoLateralEsquerda" accept=".jpg,.jpeg,.png" hidden />
+                                <span class="msg-erro-cad-car" id="erro-fotoLatEsq"></span>
+                            </div>
+                        </div>
+
+                        <div class="linha-divisoria-cad-car"></div>
+
+                        <div class="acoes-carro-cad-car">
+                            <button type="button" class="botao-voltar-cad-car" onclick="carregarPagina('admin')">Voltar</button>
+                            <button type="submit" class="botao-cadastrar-cad-car cor_fundo">Cadastrar veículo</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

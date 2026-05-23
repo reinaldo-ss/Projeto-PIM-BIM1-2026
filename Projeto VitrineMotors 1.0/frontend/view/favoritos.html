@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitrine Motors - Favoritos</title>
+
+    <!--Importações-->
+    <script src="./javascript/script.js" defer></script>
+    <link rel="stylesheet" href="../css/styleCarros.css">
+    <link rel="stylesheet" href="../css/styleGlobal.css">
+</head>
+<body>
+    <!-- Sem banner / sem carrossel: começa direto na pesquisa -->
+    <section class="section-pesquisa">
+        <div class="content-section pesquisa">
+            <div class="barra_de_pesquisa">
+                <input type="text" id="input-buscar-carro" placeholder="Buscar nos seus favoritos..." onkeydown="checarEnter(event)">
+            </div>
+            <button id="filtro_pesquisa" onclick="realizarPesquisa()">Pesquisar</button>
+        </div>
+    </section>
+
+    <section>
+        <div class="texto-mostruario content-section">
+            <p class="titulo-mostruario" id="titulo-pagina-favoritos">★ Meus Favoritos</p>
+            <p class="subtitulo-mostruario">4 veículos salvos</p>
+
+            <div class="catalogo">
+
+            </div>
+        </div>
+    </section>
+</body>
+</html>
